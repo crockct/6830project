@@ -1,3 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css.css">
+<title>6.830 Final Project</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
 
+</head>
+<body>
 
-index
+<div id="navigation"> <!-- consider using the nav tag -->
+<ul> <!--menu-->
+<li><a href=".">Home</a></li>
+<li><a href="about.html">About</a></li>
+
+</ul>
+</div>
+
+<div id="header">
+<h1>6.830 Final Project</h1>
+</div>
+
+<div id="main">
+	<div class="right">
+	<form action="">
+ Raw SQL: <input type="text" name="fname"><br>
+  <input type="submit" value="Submit">
+</form>
+	<iframe src="" style="height:300px; width:250px;" frameborder="0"></iframe>
+	</div>
+	<div id="graph"></div>
+
+</div>
+<br>
+
+</body>
+
+<script>
+var vis = d3.select("#graph")
+            .append("svg")
+.attr("width", 200).attr("height", 200);
+
+var nodes = [
+    {x: 10, y: 50},
+    {x: 70, y: 10},
+    {x: 140, y: 50}   
+  ]
+
+vis.selectAll("circle.nodes")
+   .data(nodes)
+   .enter()
+   .append("svg:circle")
+   .attr("cx", function(d) { return d.x; })
+   .attr("cy", function(d) { return d.y; })
+   .attr("r", "10px")
+   .attr("fill", "black")
+   
+</script>
+</html>
