@@ -56,10 +56,13 @@ WSGI_APPLICATION = 'dashboard.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+CURRENT_DIR = '/Users/khobbs/Dropbox/MIT/Classes/6.830/6830project/dashboard/dashboard'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': CURRENT_DIR + '/mimic2.db'
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
