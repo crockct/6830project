@@ -1,3 +1,5 @@
+# Running raw SQL query on a sqlite database 
+
 import sqlite3
 
 conn = sqlite3.connect('mimic2.db')
