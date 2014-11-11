@@ -23,37 +23,37 @@
 <div id="main">
 	<div class="right">
 	<form action="">
- Raw SQL: <input type="text" name="fname"><br>
-  <input type="submit" value="Submit">
-</form>
-	<iframe src="" style="height:300px; width:250px;" frameborder="0"></iframe>
+		Raw SQL: <input type="text" class="SQLinput" name="fname">
+		<br>
+		<br>
+		<input type="submit" value="Submit">
+	</form>
+	
+	<div id="graphRight"></div>
 	</div>
-	<div id="graph"></div>
+	
+	<div class="left">
+	<form action="">
+		<b>Raw SQL</b>
+		<br></br>
+		<textarea rows="3" cols="75" class="SQLinput" name="sql_1">
+		Write a SQL Query Here, please
+		</textarea>
+		<br>
+		<br>
+		<input type="submit" value="Submit">
+	</form>
+	<br>
+	</br>
+	<b> Histogram </b>
+	<div id="graphLeft"></div>
+	</div>
+	</div>
 
 </div>
 <br>
 
 </body>
 
-<script>
-var vis = d3.select("#graph")
-            .append("svg")
-.attr("width", 200).attr("height", 200);
-
-var nodes = [
-    {x: 10, y: 50},
-    {x: 70, y: 10},
-    {x: 140, y: 50}   
-  ]
-
-vis.selectAll("circle.nodes")
-   .data(nodes)
-   .enter()
-   .append("svg:circle")
-   .attr("cx", function(d) { return d.x; })
-   .attr("cy", function(d) { return d.y; })
-   .attr("r", "10px")
-   .attr("fill", "black")
-   
-</script>
+<script type="text/javascript" src="index_javascript.js"></script>
 </html>
