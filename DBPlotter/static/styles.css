@@ -1,0 +1,167 @@
+body {
+    font-family: "proxima-nova";
+    font-weight: 300;
+    font-size: 20px;
+}
+
+h1, h2, h3 {
+    padding-top: 12px;
+    font-family: "jaf-bernino-sans";
+    font-weight: 800;
+    font-size: 30px;
+}
+
+h1 {
+    text-align: left;
+    padding-bottom: 20px;
+}
+
+h3 {
+    text-align: left;
+    font-size: 20px;
+}
+
+.container {
+    margin: 0 auto;
+    margin: 0 auto;
+    width: 700px;
+}
+
+.header, .footer {
+    overflow: hidden;
+}
+
+.cta {
+    margin: 10px 0;
+    text-align: right;
+}
+
+.cta p {
+    border-radius: 3px;
+    display: inline-block;
+    font-weight: 600;
+    margin: 0 10px;
+    padding: 8px 24px;
+    text-decoration: none;
+}
+
+.header {
+    padding: 40px 0 0;
+}
+
+.header .cta p {
+    border: 3px solid;
+    color: black;
+}
+
+.header .cta p:hover {
+    background: #d3d3d3;
+    cursor: pointer;
+}
+
+.card {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    margin: 25px 0 20px;
+    height: 360px;
+    box-sizing: border-box;
+    float: left;
+    padding: 20px 30px;
+    width: 100%;
+}
+
+.flipper.flip {
+    transform: rotateY(180deg);
+}
+
+/* flip speed goes here */
+.flipper {
+    width:600px;
+    margin: 0 auto;
+    transition: 0.9s;
+    transform-style: preserve-3d;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 40px;
+    width: 90%;
+}
+
+/* front pane, placed above back */
+.front {
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+    transform: rotateY(180deg);
+}
+
+.card-instructions {
+    line-height: 1.5;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.back textarea {
+    background: #000;
+    border: none;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 14px;
+    font-family: "source-code-pro";
+    font-weight: 500;
+    height: 260px;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+}
+
+.back .pie-chart {
+    border: none;
+    box-sizing: border-box;
+    color: #fff;
+    height: 260px;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+}
+
+.back canvas {
+}
+
+.code {
+    font-size: 14px;
+    font-family: "source-code-pro";
+    font-weight: 500;
+}
+
+.run-button, .edit-button {
+    font-size: 25px;
+    color: gray;
+    float: right; 
+    cursor: pointer;
+}
+
+.results-title {
+    float: left;
+}
+
+.footer {
+    padding: 30px 0;
+    font-size: 21px;
+}
+
+.created-by {
+    float: right;
+    font-size: 15px;
+}
+
+.created-by a {
+    color: black;
+}
