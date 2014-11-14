@@ -1,3 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css.css">
+<title>6.830 Final Project</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
 
+</head>
+<body>
 
-index
+<div id="navigation"> <!-- consider using the nav tag -->
+<ul> <!--menu-->
+<li><a href=".">Home</a></li>
+<li><a href="about.html">About</a></li>
+
+</ul>
+</div>
+
+<div id="header">
+<h1>6.830 Final Project</h1>
+</div>
+
+<div id="main">
+	<div class="right">
+	<form action="">
+		Raw SQL: <input type="text" class="SQLinput" name="fname">
+		<br>
+		<br>
+		<input type="submit" value="Submit">
+	</form>
+	
+	<div id="graphRight"></div>
+	</div>
+	
+	<div class="left">
+	<form action="">
+		<b>Raw SQL</b>
+		<br></br>
+		<textarea rows="3" cols="75" class="SQLinput" name="sql_1">
+		Write a SQL Query Here, please
+		</textarea>
+		<br>
+		<br>
+		<input type="submit" value="Submit">
+	</form>
+	<br>
+	</br>
+	<b> Histogram </b>
+	<div id="graphLeft"></div>
+	</div>
+	</div>
+
+</div>
+<br>
+
+</body>
+
+<script type="text/javascript" src="index_javascript.js"></script>
+</html>
