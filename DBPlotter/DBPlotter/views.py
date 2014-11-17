@@ -17,6 +17,9 @@ import json
 # IDEA: Intelligently process data of various dimensionalities into a chart type
 # IDEA: Automatically generate basic charts for a database
 
+
+databaseFile = 'C:\\Users\\Colleen\\Documents\\GitHub\\6830project\\DBPlotter\\DBPlotter\\mimic2.db'
+
 # Helper function to check if a given string can be parsed into a number
 def isNumerical(val):
 	try:
@@ -32,7 +35,8 @@ def pie_chart(request):
 	print request.GET.get('q','')
 
 	# Open connection to database; currently just a file
-	conn = sqlite3.connect('/home/dbvisual/mimic2.db');
+
+	conn = sqlite3.connect(databaseFile);
 	c = conn.cursor()
 	
 	# Variable to hold query output as dictionary
@@ -55,7 +59,7 @@ def pie_chart(request):
 	print request.GET.get('q','')
 
 	# Open connection to database; currently just a file
-	conn = sqlite3.connect('/home/dbvisual/mimic2.db');
+	conn = sqlite3.connect(databaseFile);
 	c = conn.cursor()
 	
 	# Variable to hold query output as dictionary
