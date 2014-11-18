@@ -53,7 +53,7 @@ def pie_chart(request):
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 	
 # Handle query from a WORD CLOUD card (or any two-dimensional requester eventually)  
-def pie_chart(request):
+def word_cloud(request):
 
 	# Print query for debugging purposes
 	print request.GET.get('q','')
