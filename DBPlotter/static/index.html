@@ -8,8 +8,8 @@
 
         <link rel="stylesheet" href="styles.css" media="screen">
 	<link rel="stylesheet" href="font-awesome.css">
-	<!--<script src="//use.typekit.net/eyy7ksi.js"></script>
-	<script>try{Typekit.load();}catch(e){}</script> -->
+	<script src="//use.typekit.net/eyy7ksi.js"></script>
+	<script>try{Typekit.load();}catch(e){}</script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" ></script>
 	<script src="Chart.js"></script>
 	<script src="pie-chart-card.js"></script>
@@ -18,7 +18,19 @@
     <body>
 	<div class="header"><div class="container">
 	<h1>Database Plotting Tool</h1>
+	<p class="authors">Mukarram Tahir, Katherine Hobbs, Colleen Rock</p>
 	<p>The prototype is of a tool that allows you to create a visual dashboard to a relational database. In the final product, a user or administrator will be able to compile a group of "cards" or panels that visualize the results of certain queries on the database so that viewers of the database can get a quick overview of the current state of the database without having to perform the queries themselves or plot the output of those queries if they were to run those themselves.</p>
+
+	<p>The database file to which SQLite must connect (on the server where this page is hosted) can be specified below. Note that we have to specify a .db file since SQLite is a server-less database system, so eventually we will change this to a database system that supports a server-client relationship, such as PostgreSQL. 
+
+	<form>
+	    <div class="group">
+		<input id="dbfile" type="text" required>
+		<span class="highlight"></span>
+		<span class="bar"></span>
+		<label>Database File</label>
+	    </div>
+	</form>
 
 	<p>The page below shows a sample of possible cards that will be present in the final system. The front side of the cards is a canvas that will display the visualization or plot of the retrieved data. The back of these cards has a terminal where the user can enter an SQL query that return data of the appropriate dimensionality for the plot associated with that card. </p>
 	<h3>Pie Charts</h3>

@@ -18,8 +18,6 @@ import json
 # IDEA: Automatically generate basic charts for a database
 
 
-databaseFile = 'C:\\Users\\Colleen\\Documents\\GitHub\\6830project\\DBPlotter\\DBPlotter\\mimic2.db'
-
 # Helper function to check if a given string can be parsed into a number
 def isNumerical(val):
 	try:
@@ -33,10 +31,10 @@ def pie_chart(request):
 
 	# Print query for debugging purposes
 	print request.GET.get('q','')
+	print request.GET.get('d','')
 
 	# Open connection to database; currently just a file
-
-	conn = sqlite3.connect(databaseFile);
+	conn = sqlite3.connect(request.GET.get('d',''));
 	c = conn.cursor()
 	
 	# Variable to hold query output as dictionary
@@ -74,4 +72,3 @@ def word_cloud(request):
 
 	# Construct a JSON from dictionary and return
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
-	

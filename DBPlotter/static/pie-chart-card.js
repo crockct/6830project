@@ -1,4 +1,6 @@
 
+var myPieChart;
+
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -14,8 +16,7 @@ function runQuery() {
 
     $.ajax({
 	dataType: "json",
-	//url: "http://104.236.13.173:8080/pie_chart/?q=".concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
-	url: "http://localhost:8000/pie_chart/?q=".concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
+	url: "http://104.236.13.173:8080/pie_chart/?d=".concat($('#dbfile').val()).concat("&q=").concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
 	success: function(data)
 	{
 	    var pie_data = [];
@@ -31,7 +32,7 @@ function runQuery() {
 	    var canvas = document.getElementById("myChart");
 	    var ctx = canvas.getContext("2d");
 	    ctx.clearRect(0, 0, canvas.width, canvas.height);
-	    var myPieChart = new Chart(ctx).Pie(pie_data,{});
+	    myPieChart = new Chart(ctx).Pie(pie_data,{});
 	}
     });
 
