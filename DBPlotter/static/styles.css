@@ -13,7 +13,8 @@ h1, h2, h3 {
 
 h1 {
     text-align: left;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 h3 {
@@ -36,7 +37,7 @@ h3 {
     text-align: right;
 }
 
-.cta p {
+.cta a {
     border-radius: 3px;
     display: inline-block;
     font-weight: 600;
@@ -139,6 +140,7 @@ h3 {
     font-size: 14px;
     font-family: "source-code-pro";
     font-weight: 500;
+    color:#5264AE;
 }
 
 .run-button, .edit-button {
@@ -160,8 +162,74 @@ h3 {
 .created-by {
     float: right;
     font-size: 15px;
+    font-weight: normal;
 }
 
 .created-by a {
     color: black;
+}
+
+/* quoted (temporarily) from scotch.io google materials design with css3 tutorial */ 
+.group        { 
+  position:relative; 
+  margin-bottom:45px; 
+}
+input         {
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:600px;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+input:focus     { outline:none; }
+
+label          {
+  color:#999; 
+  font-size:18px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+}
+
+input:focus ~ label, input:valid ~ label     {
+  top:-20px;
+  font-size:14px;
+  color:#5264AE;
+}
+
+.bar  { position:relative; display:block; width:615px; }
+.bar:before, .bar:after   {
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background:#5264AE; 
+  transition:0.2s ease all; 
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+  width:50%;
+}
+
+form {
+    padding-top: 25px;
+}
+
+.authors {
+    margin-top: 0px;
+    padding-bottom: 20px;
+    font-weight: normal;
+    font-size: 14px;
+    color:#5264AE;
 }
