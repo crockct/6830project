@@ -17,6 +17,7 @@ import json
 # IDEA: Intelligently process data of various dimensionalities into a chart type
 # IDEA: Automatically generate basic charts for a database
 
+
 # Helper function to check if a given string can be parsed into a number
 def isNumerical(val):
 	try:
@@ -56,7 +57,7 @@ def word_cloud(request):
 	print request.GET.get('q','')
 
 	# Open connection to database; currently just a file
-	conn = sqlite3.connect('/home/dbvisual/mimic2.db');
+	conn = sqlite3.connect(databaseFile);
 	c = conn.cursor()
 	
 	# Variable to hold query output as dictionary
