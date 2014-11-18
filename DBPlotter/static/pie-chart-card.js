@@ -14,7 +14,8 @@ function runQuery() {
 
     $.ajax({
 	dataType: "json",
-	url: "http://104.236.13.173:8080/pie_chart/?q=".concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
+	//url: "http://104.236.13.173:8080/pie_chart/?q=".concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
+	url: "http://localhost:8000/pie_chart/?q=".concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
 	success: function(data)
 	{
 	    var pie_data = [];
