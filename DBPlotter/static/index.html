@@ -8,11 +8,13 @@
 
         <link rel="stylesheet" href="styles.css" media="screen">
 	<link rel="stylesheet" href="font-awesome.css">
-	<script src="//use.typekit.net/eyy7ksi.js"></script>
-	<script>try{Typekit.load();}catch(e){}</script>
+	<!-- <script src="//use.typekit.net/eyy7ksi.js"></script>
+	<script>try{Typekit.load();}catch(e){}</script> -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" ></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
 	<script src="Chart.js"></script>
 	<script src="pie-chart-card.js"></script>
+	<script src="histogram-card.js"></script>
     </head>
 
     <body>
@@ -38,58 +40,96 @@
 
 	</div></div>
 
-	<div class="header"><div class="container">
-	<div class="flipper">
-	<div class="card">
-	    <div class="front">
-		<div class="card-instructions" id="back-instructions">
-		<span id="results-title-span" class="results-title"></span>
-		<span class="edit-button" onclick="editQuery()"><i class="fa fa-terminal"></i></span>
+	<div class="header">
+		<div class="container">
+			<div class="flipper">
+				<div class="card">
+					<div class="front">
+						<div class="card-instructions" id="back-instructions">
+							<span id="results-title-span" class="results-title"></span>
+							<span class="edit-button" onclick="editQuery()"><i class="fa fa-terminal"></i></span>
+						</div>
+					<div class="pie-chart">
+						<canvas id="myChart" width="520" height="260"></canvas>
+					</div>
+				</div>
+				<div class="back">
+					<div class="card-instructions" id="front-instructions">
+						SQL Query
+						<span id="execute-button" class="run-button" onclick="runQuery()"><i class="fa fa-line-chart"></i></span>
+					</div>
+						<textarea id="query" spellcheck="false">Enter a query...</textarea>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="pie-chart">
-		    <canvas id="myChart" width="520" height="260"></canvas>
-		</div>
-	    </div>
-	    <div class="back">
-		<div class="card-instructions" id="front-instructions">
-		    SQL Query
-		    <span id="execute-button" class="run-button" onclick="runQuery()"><i class="fa fa-line-chart"></i></span>
-		</div>
-	    	<textarea id="query" spellcheck="false">Enter a query...</textarea>
-	    </div>
-	</div>
-	</div>
-
-	</div></div>
-
-	<div class="header"><div class="container">
-	<h3>Word Clouds</h3>
-	<p>A chart that can display two-dimensional query output is a pie chart. Start by clicking the icon on the top right corner of the card, and then enter a query into the terminal on the back of the card after it flips over. Then click the button on the top right corner to send the query to the server and render the output as a pie chart when it arrives.</p>
-	</div></div>
-
-	<div class="header"><div class="container">
-	<div class="flipper">
-	<div class="card">
-	    <div class="front">
-		<div class="card-instructions" id="back-instructions">
-		<span id="results-title-span" class="results-title"></span>
-		<span class="edit-button" onclick="editQuery()"><i class="fa fa-terminal"></i></span>
-		</div>
-		<div class="pie-chart">
-		    <canvas id="myChart" width="520" height="260"></canvas>
-		</div>
-	    </div>
-	    <div class="back">
-		<div class="card-instructions" id="front-instructions">
-		    SQL Query
-		    <span id="execute-button" class="run-button" onclick="runQuery()"><i class="fa fa-line-chart"></i></span>
-		</div>
-	    	<textarea id="query">Enter a query...</textarea>
-	    </div>
-	</div>
 	</div>
 
-	</div></div>
+	<div class="header">
+		<div class="container">
+			<h3>Word Clouds</h3>
+			<p>Start by clicking the icon on the top right corner of the card, and then enter a query into the terminal on the back of the card after it flips over. 
+				Then click the button on the top right corner to send the query to the server and render the output as a pie chart when it arrives.
+			</p>
+		</div>
+	</div>
+
+	<div class="header">
+		<div class="container">
+			<div class="flipper">
+				<div class="card">
+					<div class="front">
+						<div class="card-instructions" id="back-instructions">
+							<span id="results-title-span" class="results-title"></span>
+							<span class="edit-button" onclick="editQuery()"><i class="fa fa-terminal"></i></span>
+						</div>
+						<div class="pie-chart">
+							<canvas id="myChart" width="520" height="260"></canvas>
+						</div>
+					</div>
+					<div class="back">
+						<div class="card-instructions" id="front-instructions">
+							SQL Query
+							<span id="execute-button" class="run-button" onclick="runQuery()"><i class="fa fa-line-chart"></i></span>
+						</div>
+						<textarea id="query">Enter a query...</textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<div class="header">
+	<div class="container">
+		<h3>Histogram</h3>
+		<p>A chart that can display two-dimensional query output is a pie chart. Start by clicking the icon on the top right corner of the card, and then enter a query into the terminal on the back of the card after it flips over. Then click the button on the top right corner to send the query to the server and render the output as a pie chart when it arrives.</p>
+	</div>
+</div>
+
+	<div class="header">
+		<div class="container">
+			<div class="flipper">
+				<div class="card">
+					<div class="front">
+						<div class="card-instructions" id="back-instructions">
+							<span id="results-title-span" class="results-title"></span>
+							<span class="edit-button" onclick="editQuery()"><i class="fa fa-terminal"></i></span>
+						</div>
+						<div id="graphHistogram" width="520" height="260">
+						</div>
+					</div>
+					<div class="back">
+						<div class="card-instructions" id="front-instructions">
+							SQL Query
+							<span id="execute-button" class="run-button" onclick="runQuery()"><i class="fa fa-line-chart"></i></span>
+						</div>
+						<textarea id="query">Enter a query...</textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
 
 	<div class="header"><div class="container">
 	<h3>Process</h3>
