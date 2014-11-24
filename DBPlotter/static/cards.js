@@ -2,8 +2,19 @@ var myPieChart;
 var myHistogramChart;
 
 $(document).ready(function() {
-    flipCardButton();
+    flipCardButtonEvent();
 })
+
+function getTableNames() {
+    $.ajax({
+        dataType: "json",
+        url: "http://127.0.0.1:8000/getTableNames",
+        success: function(data) {
+            var table_names = [];
+            $('.left').text(table_names);
+        }
+    });
+}
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -132,7 +143,7 @@ function runQueryHistogram() {
 }
 
 
-function flipCardButton() {
+function flipCardButtonEvent() {
     $('.edit-button').on('click', function(e) {
         e.preventDefault();
         $(this).closest('.flipper').toggleClass("flip");
