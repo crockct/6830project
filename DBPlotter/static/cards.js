@@ -1,6 +1,10 @@
 var myPieChart;
 var myHistogramChart;
 
+$(document).ready(function() {
+    flipCardButton();
+})
+
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -127,6 +131,10 @@ function runQueryHistogram() {
     });
 }
 
-function flipCard() {
-    $(".flipper").toggleClass("flip");
+
+function flipCardButton() {
+    $('.edit-button').on('click', function(e) {
+        e.preventDefault();
+        $(this).closest('.flipper').toggleClass("flip");
+    })
 }
