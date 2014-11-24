@@ -4,6 +4,22 @@ body {
     font-size: 20px;
 }
 
+.left {
+	float:left;
+	width: 20%;
+}
+
+.right {
+	float:right;
+	width: 80%;
+}
+
+#main {
+	padding-right:4%;
+	padding-left:4%;
+	padding-bottom:4%;
+}
+
 h1, h2, h3 {
     padding-top: 12px;
     font-family: "jaf-bernino-sans";
