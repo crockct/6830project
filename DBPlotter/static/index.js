@@ -7,12 +7,9 @@ var filepathBtnEvent = function() {
         e.preventDefault();
         $.ajax({
             type: "GET",
-            // contentType: "application/json; charset=utf-8",
-            // dataType: "json",
             url: "/get_tables/",
-            // url: "http://127.0.0.1:8000/get_tables/?f=".concat($('#filepath').val()),
             data: {
-                "filepath": $('#filepath').val()
+                "f": $('#filepath').val()
             },
             success: function(data) {
                 table_names = [];
