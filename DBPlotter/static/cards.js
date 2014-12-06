@@ -5,17 +5,6 @@ $(document).ready(function() {
     flipCardButtonEvent();
 })
 
-function getTableNames() {
-    $.ajax({
-        dataType: "json",
-        url: "http://127.0.0.1:8000/getTableNames",
-        success: function(data) {
-            var table_names = [];
-            $('.left').text(table_names);
-        }
-    });
-}
-
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -30,7 +19,7 @@ function runQuery(chartType) {
 
     $.ajax({
         dataType: "json",
-        url: "http://127.0.0.1:8000/pie_chart/?d=".concat($('#dbfile').val()).concat("&q=").concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
+        url: "/pie_chart/?d=".concat($('#dbfile').val()).concat("&q=").concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
         success: function(data) {
             var pie_data = [];
 
@@ -60,7 +49,7 @@ function runQueryPieChart() {
 
     $.ajax({
         dataType: "json",
-        url: "http://127.0.0.1:8000/pie_chart/?d=".concat($('#dbfile').val()).concat("&q=").concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
+        url: "/pie_chart/?d=".concat($('#dbfile').val()).concat("&q=").concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
         success: function(data) {
             var pie_data = [];
 

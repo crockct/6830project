@@ -1,56 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<title>Database Plotter</title>
+		<!-- CSS files -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="styles.css" media="screen">
+		<link rel="stylesheet" href="font-awesome.css">
 
-<head>
-    <title>Database Plotter</title>
-    <!-- CSS files -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="styles.css" media="screen">
-    <link rel="stylesheet" href="font-awesome.css">
-
-    <!-- javascript scripts -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
-    <script src="index.js"></script>
-    <script src="chart.js"></script>
-    <script src="cards.js"></script>
-</head>
+		<!-- javascript scripts -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
+		<script src="chart.js"></script>
+		<script src="cards.js"></script>
+		<script src="index.js"></script>
+	</head>
 	
-<body>
-
-	<div class="db-file-form">
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">DB File Path</a>
-                </div>
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="enter db filepath" value="static/mimic2.db">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-            </div>
-        </nav>
-    </div>
-	
-	<div id="main">
-		<div class="left">
-			<h3>Tables:</h3>
-			<table id="tablesTable">
-			</table>
+	<body>
+		<div class="db-file-form">
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#">DB File Path</a>
+					</div>
+					<form class="navbar-form navbar-left">
+						<div class="form-group">
+							<input id="filepath" type="text" class="form-control" placeholder="enter db filepath" value="static/mimic2.db">
+						</div>
+						<button id="filepath-btn" class="btn btn-default">Submit</button>
+					</form>
+				</div>
+			</nav>
 		</div>
-		<div class="right">
 		
-			<div class="container">
-				<h1>Database Plotting Tool</h1>
-				<p class="authors">Mukarram Tahir, Katherine Hobbs, Colleen Rock</p>
-				<p>The prototype is of a tool that allows you to create a visual dashboard to a relational database. In the final product, a user or administrator will be able to compile a group of "cards" or panels that visualize the results of certain queries on the database so that viewers of the database can get a quick overview of the current state of the database without having to perform the queries themselves or plot the output of those queries if they were to run those themselves.</p>
-
-				<p>The database file to which SQLite must connect (on the server where this page is hosted) can be specified below. Note that we have to specify a .db file since SQLite is a server-less database system, so eventually we will change this to a database system that supports a server-client relationship, such as PostgreSQL.
-
+		<div id="main">
+			<div class="left">
+				<h3>Tables:</h3>
+				<ol id="tables-list">
+				</ol>
+			</div>
+			<div class="right">
+				
+				<div class="container">
+					<h1>Database Plotting Tool</h1>
+					<p class="authors">Mukarram Tahir, Katherine Hobbs, Colleen Rock</p>
+					<p>The prototype is of a tool that allows you to create a visual dashboard to a relational database. In the final product, a user or administrator will be able to compile a group of "cards" or panels that visualize the results of certain queries on the database so that viewers of the database can get a quick overview of the current state of the database without having to perform the queries themselves or plot the output of those queries if they were to run those themselves.</p>
+					<p>The database file to which SQLite must connect (on the server where this page is hosted) can be specified below. Note that we have to specify a .db file since SQLite is a server-less database system, so eventually we will change this to a database system that supports a server-client relationship, such as PostgreSQL.
 					<form>
 						<div class="group">
 							<input id="dbfile" type="text" required>
@@ -59,95 +55,92 @@
 							<label>Database File</label>
 						</div>
 					</form>
-
 					<p>The page below shows a sample of possible cards that will be present in the final system. The front side of the cards is a canvas that will display the visualization or plot of the retrieved data. The back of these cards has a terminal where the user can enter an SQL query that return data of the appropriate dimensionality for the plot associated with that card. </p>
 					<h3>Pie Charts</h3>
 					<p>A chart that can display two-dimensional query output is a pie chart. Start by clicking the icon on the top right corner of the card, and then enter a query into the terminal on the back of the card after it flips over. Then click the button on the top right corner to send the query to the server and render the output as a pie chart when it arrives. The pie chart is rendered using the Chart.js library</p>
-			</div>
-			<div class="header">
-				<div class="container">
-					<div id="flipper1" class="flipper flip">
-						<div class="card">
-							<div class="front">
-								<div class="card-instructions" id="back-instructions">
-									<span id="results-title-span" class="results-title"></span>
-									<span class="edit-button"><i class="fa fa-terminal"></i></span>
+				</div>
+				<div class="header">
+					<div class="container">
+						<div id="flipper1" class="flipper flip">
+							<div class="card">
+								<div class="front">
+									<div class="card-instructions" id="back-instructions">
+										<span id="results-title-span" class="results-title"></span>
+										<span class="edit-button"><i class="fa fa-terminal"></i></span>
+									</div>
+									<div class="pie-chart">
+										<canvas id="myPieChart" width="520" height="260"></canvas>
+									</div>
 								</div>
-								<div class="pie-chart">
-									<canvas id="myPieChart" width="520" height="260"></canvas>
+								<div class="back">
+									<div class="card-instructions" id="front-instructions">
+										SQL Query
+										<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-line-chart"></i></span>
+									</div>
+									<textarea id="query" spellcheck="false">Enter a query...</textarea>
 								</div>
-							</div>
-							<div class="back">
-								<div class="card-instructions" id="front-instructions">
-									SQL Query
-									<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-line-chart"></i></span>
-								</div>
-								<textarea id="query" spellcheck="false">Enter a query...</textarea>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="header">
-				<div class="container">
-					<h3>Word Cloud</h3>
-					<div id="flipper2" class="flipper flip">
-						<div class="card">
-							<div class="front">
-								<div class="card-instructions" id="back-instructions">
-									<span id="results-title-span" class="results-title"></span>
-									<span class="edit-button"><i class="fa fa-terminal"></i></span>
+				<div class="header">
+					<div class="container">
+						<h3>Word Cloud</h3>
+						<div id="flipper2" class="flipper flip">
+							<div class="card">
+								<div class="front">
+									<div class="card-instructions" id="back-instructions">
+										<span id="results-title-span" class="results-title"></span>
+										<span class="edit-button"><i class="fa fa-terminal"></i></span>
+									</div>
+									<div class="chart">
+										<canvas id="myWordCloud" width="520" height="260"></canvas>
+									</div>
 								</div>
-								<div class="chart">
-									<canvas id="myWordCloud" width="520" height="260"></canvas>
+								<div class="back">
+									<div class="card-instructions" id="front-instructions">
+										SQL Query
+										<span id="execute-button" class="run-button" onclick="runQueryWordCloud()"><i class="fa fa-line-chart"></i></span>
+									</div>
+									<textarea id="query">Enter a query...</textarea>
 								</div>
-							</div>
-							<div class="back">
-								<div class="card-instructions" id="front-instructions">
-									SQL Query
-									<span id="execute-button" class="run-button" onclick="runQueryWordCloud()"><i class="fa fa-line-chart"></i></span>
-								</div>
-								<textarea id="query">Enter a query...</textarea>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-
-			
-			<div class="header">
-				<div class="container">
-					<h3>Histogram</h3>
-					<div id="flipper3" class="flipper flip">
-						<div class="card">
-							<div class="front">
-								<div class="card-instructions" id="back-instructions">
-									<span id="results-title-span" class="results-title"></span>
-									<span class="edit-button"><i class="fa fa-terminal"></i></span>
+				
+				<div class="header">
+					<div class="container">
+						<h3>Histogram</h3>
+						<div id="flipper3" class="flipper flip">
+							<div class="card">
+								<div class="front">
+									<div class="card-instructions" id="back-instructions">
+										<span id="results-title-span" class="results-title"></span>
+										<span class="edit-button"><i class="fa fa-terminal"></i></span>
+									</div>
+									<div class="chart">
+										<canvas id="myHistogram" width="520" height="260"></canvas>
+									</div>
 								</div>
-								<div class="chart">
-									<canvas id="myHistogram" width="520" height="260"></canvas>
+								<div class="back">
+									<div class="card-instructions" id="front-instructions">
+										SQL Query
+										<span id="execute-button" class="run-button" onclick="runQueryHistogram()"><i class="fa fa-line-chart"></i></span>
+									</div>
+									<textarea id="query">Enter a query...</textarea>
 								</div>
-							</div>
-							<div class="back">
-								<div class="card-instructions" id="front-instructions">
-									SQL Query
-									<span id="execute-button" class="run-button" onclick="runQueryHistogram()"><i class="fa fa-line-chart"></i></span>
-								</div>
-								<textarea id="query">Enter a query...</textarea>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			
-			<div class="header">
-				<div class="container">
-					<h3>Process</h3>
-					<p>The system is set up as a browser client that connects to a Django based API for performing queries and obtaining numerical data for rendering into plots. The cards are HTML divs that are flipped using CSS 3D transforms triggered when the user presses the buttons on the card. The text of the query is pre-processed by the client to clean up unwanted characters, and then sent to the server as an argument in the link. The server runs this query and then based on the dimensionality of the query output, organizes it into a JSON response and returns it to the client. </p>
-					<p>The pie chart can be tested by running the sample query below, which returns a two-column output that contains names of medical tests and their frequency of use on patients.</p>
-					<p class="code">
+				
+				<div class="header">
+					<div class="container">
+						<h3>Process</h3>
+						<p>The system is set up as a browser client that connects to a Django based API for performing queries and obtaining numerical data for rendering into plots. The cards are HTML divs that are flipped using CSS 3D transforms triggered when the user presses the buttons on the card. The text of the query is pre-processed by the client to clean up unwanted characters, and then sent to the server as an argument in the link. The server runs this query and then based on the dimensionality of the query output, organizes it into a JSON response and returns it to the client. </p>
+						<p>The pie chart can be tested by running the sample query below, which returns a two-column output that contains names of medical tests and their frequency of use on patients.</p>
+						<p class="code">
 						SELECT d_labitems.test_name,
 						<br>d_labitems.itemid as e_itemid,
 						<br>COUNT(labevents.itemid) AS NumberOfOccurences
@@ -158,26 +151,24 @@
 						<br>GROUP BY d_labitems.test_name
 						<br>ORDER BY NumberOfOccurences DESC
 						<br>LIMIT 5
-					</p>
-					<p> A more bogus query that can be used to generate a pie chart is given below; the numerical field is just the item ID of the meditem, but ends up being used as the tally for the pie chart.</p>
-					<p class="code">
+						</p>
+						<p> A more bogus query that can be used to generate a pie chart is given below; the numerical field is just the item ID of the meditem, but ends up being used as the tally for the pie chart.</p>
+						<p class="code">
 						SELECT DISTINCT d_meditems.*
 						<br>FROM d_meditems, medevents
 						<br>JOIN d_patients ON medevents.subject_id=d_patients.subject_id WHERE d_meditems.itemid=medevents.itemid AND sex='F'
 						<br>LIMIT 5
-					</p>
+						</p>
+					</div>
 				</div>
-			</div>
-			<div class="footer">
-				<div class="container">
-					<span class="created-by">Prototype created for <a href="http://db.csail.mit.edu/6.830">MIT 6.830 Database Systems</a></span>
+				<div class="footer">
+					<div class="container">
+						<span class="created-by">Prototype created for <a href="http://db.csail.mit.edu/6.830">MIT 6.830 Database Systems</a></span>
+					</div>
 				</div>
-			</div>
-		</div><!-- end of right div -->
-		
-	</div><!-- end of main content div -->
-
-    
-</body>
-
-</html>
+				</div><!-- end of right div -->
+				
+				</div><!-- end of main content div -->
+				
+			</body>
+		</html>

@@ -26,6 +26,9 @@ def isNumerical(val):
 	except ValueError:
 		return 0
 
+def get_tables(request):
+	return HttpResponse(json.dumps(["tablename1","tablename2","tablename3"]), content_type="application/json")
+
 # Handle query from a PIE CHART card (or any two-dimensional requester eventually)  
 def pie_chart(request):
 

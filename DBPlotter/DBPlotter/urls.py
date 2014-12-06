@@ -12,6 +12,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pie_chart/', 'DBPlotter.views.pie_chart', name='pie_chart'),
+    url(r'^get_tables/', 'DBPlotter.views.get_tables', name='get_tables')
+    # url(r'^get_tables/', 'get_tables')
 )
 
 urlpatterns += patterns('', (
