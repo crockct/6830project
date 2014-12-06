@@ -46,7 +46,7 @@ def get_tables(request):
 
     c = initialize_connection(filename)
     table_names = enumerate_tables(c)
-    
+
     return HttpResponse(json.dumps(table_names), content_type="application/json")
 
 # Handle query from a PIE CHART card (or any two-dimensional requester eventually)  
