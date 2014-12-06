@@ -26,8 +26,28 @@ def isNumerical(val):
 	except ValueError:
 		return 0
 
+# Establish connection to given database file and return sqlite3 cursor
+def initialize_connection(db_filename):
+    conn = sqlite3.connect(db_filename)
+    return conn.cursor()
+
+# Determine list of tables in database, using provided sqlite3 cursor
+def enumerate_tables(c):
+    tables = []
+
+    for row in c.execute("SELECT name FROM sqlite_master WHERE type='table';"):
+        tables.append(row[0].encode('ascii', 'ignore'))
+
+    return tables
+
+
 def get_tables(request):
-	return HttpResponse(json.dumps(["tablename1","tablename2","tablename3"]), content_type="application/json")
+    filename = request.GET.get('f', '')
+
+    c = initialize_connection(filename)
+    table_names = enumerate_tables(c)
+    
+    return HttpResponse(json.dumps(table_names), content_type="application/json")
 
 # Handle query from a PIE CHART card (or any two-dimensional requester eventually)  
 def pie_chart(request):
