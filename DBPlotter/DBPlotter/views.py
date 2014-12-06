@@ -96,4 +96,3 @@ def word_cloud(request):
 
 	# Construct a JSON from dictionary and return
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
-	

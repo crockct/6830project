@@ -4,6 +4,22 @@ body {
     font-size: 20px;
 }
 
+.left {
+	float:left;
+	width: 20%;
+}
+
+.right {
+	float:right;
+	width: 80%;
+}
+
+#main {
+	padding-right:4%;
+	padding-left:4%;
+	padding-bottom:4%;
+}
+
 h1, h2, h3 {
     padding-top: 12px;
     font-family: "jaf-bernino-sans";
@@ -27,7 +43,7 @@ h3 {
     width: 700px;
 }
 
-.header, .footer {
+.card, .footer {
     overflow: hidden;
 }
 
@@ -45,16 +61,16 @@ h3 {
     text-decoration: none;
 }
 
-.header {
+.card {
     padding: 40px 0 0;
 }
 
-.header .cta p {
+.card .cta p {
     border: 3px solid;
     color: black;
 }
 
-.header .cta p:hover {
+.card .cta p:hover {
     background: #d3d3d3;
     cursor: pointer;
 }
