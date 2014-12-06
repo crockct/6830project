@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pie_chart/', 'DBPlotter.views.pie_chart', name='pie_chart'),
+	url(r'^bubble_cloud/', 'DBPlotter.views.word_cloud', name='bubble_cloud'),
 )
 
 urlpatterns += patterns('', (
