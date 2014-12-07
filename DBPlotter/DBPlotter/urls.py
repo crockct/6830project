@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 
 from DBPlotter import settings
 
@@ -12,7 +13,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pie_chart/', 'DBPlotter.views.pie_chart', name='pie_chart'),
-    url(r'^bubble_cloud/', 'DBPlotter.views.word_cloud', name='bubble_cloud'),
+    url(r'^bubble_cloud/', TemplateView.as_view(template_name='bubble_cloud/index.html')),
     url(r'^get_tables/', 'DBPlotter.views.get_tables', name='get_tables')
 )
 
