@@ -2,6 +2,7 @@ $(document).ready(function() {
     filepathBtnEvent();
 });
 
+// sends the DB filepath to the server and requests the list of table names for the given DB
 var filepathBtnEvent = function() {
     $("#filepath-btn").on("click", function(e) {
         e.preventDefault();
@@ -24,6 +25,9 @@ var filepathBtnEvent = function() {
         })
     });
 }
+
+// this function is called every time a table name is clicked on--
+// it hides the instructions and displays the cards for the selected table
 var tableNameBtnEvent = function() {
     $(".table-name").on("click", function(e) {
         e.preventDefault();
@@ -32,11 +36,12 @@ var tableNameBtnEvent = function() {
         var tablename = $(this).text();
         console.log("getting card info for table: " + tablename);
         getPieChartInfo(tablename);
-        getWordCloudInfo(tablename);
-        getHistogramInfo(tablename);
+        // getWordCloudInfo(tablename);
+        // getHistogramInfo(tablename);
     })
 }
 
+// request all info needed to display the pie chart card for the given table
 var getPieChartInfo = function(tablename) {
     $.ajax({
         // type: "GET",
@@ -68,6 +73,7 @@ var getPieChartInfo = function(tablename) {
     });
 }
 
+// request all info needed to display the word cloud card for the given table
 var getWordCloudInfo = function(tablename) {
     $.ajax({
         // type: "GET",
@@ -80,6 +86,7 @@ var getWordCloudInfo = function(tablename) {
     })
 }
 
+// request all info needed to display the histogram card for the given table
 var getHistogramInfo = function(tablename) {
     $.ajax({
         // type: "GET",
