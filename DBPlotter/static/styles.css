@@ -16,9 +16,16 @@ body {
   vertical-align: top;
 }
 
-.right {
+.middle {
 	width: 70%;
+	display: inline-block;
+}
+
+.right {
+	width: 5%;
   display: inline-block;
+  vertical-align: top;
+  text-align: center;
 }
 
 .table-name {
