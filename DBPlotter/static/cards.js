@@ -138,3 +138,19 @@ function flipCardButtonEvent() {
         $(this).closest('.flipper').toggleClass("flip");
     })
 }
+
+
+var addPieChart = function addPieChart() {
+	$('#cardcontainer').prepend('<div class="container">  <div class="flipper flip"> <div class="card"> <div class="front"> <div class="card-instructions" id="back-instructions"><span id="results-title-span" class="results-title"></span><span class="edit-button"><i class="fa fa-terminal"></i></span></div><div class="pie-chart"><canvas id="myPieChart" width="520" height="260"></canvas></div> </div><div class="back"><div class="card-instructions" id="front-instructions">SQL Query<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-line-chart"></i></span></div><textarea id="query" spellcheck="false">Enter a query...</textarea></div></div></div></div>');
+}
+
+
+//TODO fix chart type in html
+var addBarChart = function addBarChart() {
+	$('#cardcontainer').prepend('<div class="container">  <div class="flipper flip"> <div class="card"> <div class="front"> <div class="card-instructions" id="back-instructions"><span id="results-title-span" class="results-title"></span><span class="edit-button"><i class="fa fa-terminal"></i></span></div><div class="pie-chart"><canvas id="myPieChart" width="520" height="260"></canvas></div> </div><div class="back"><div class="card-instructions" id="front-instructions">SQL Query<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-line-chart"></i></span></div><textarea id="query" spellcheck="false">Enter a query...</textarea></div></div></div></div>');
+}
+
+// TODO fix chart type in html
+var addLineChart = function addLineChart() {
+	$('#cardcontainer').prepend('<div class="container">  <div class="flipper flip"> <div class="card"> <div class="front"> <div class="card-instructions" id="back-instructions"><span id="results-title-span" class="results-title"></span><span class="edit-button"><i class="fa fa-terminal"></i></span></div><div class="pie-chart"><canvas id="myPieChart" width="520" height="260"></canvas></div> </div><div class="back"><div class="card-instructions" id="front-instructions">SQL Query<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-line-chart"></i></span></div><textarea id="query" spellcheck="false">Enter a query...</textarea></div></div></div></div>');
+}
