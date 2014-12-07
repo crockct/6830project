@@ -44,7 +44,7 @@
 			<div id="middlediv" class="middle">
 				
 				<div class="container">
-					<h1>Database Plotting Tool</h1>
+					<h1>Database Dashboard</h1>
 					<p class="authors">Mukarram Tahir, Katherine Hobbs, Colleen Rock</p>
 					<form>
 						<div class="group">
@@ -71,8 +71,10 @@
 								</div>
 								<div class="back">
 									<div class="card-instructions" id="front-instructions">
+										<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
 										SQL Query
-										<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-line-chart"></i></span>
+										
+										<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-pencil"></i></span>
 									</div>
 									<textarea id="query" spellcheck="false">Enter a query...</textarea>
 								</div>
@@ -96,8 +98,9 @@
 								</div>
 								<div class="back">
 									<div class="card-instructions" id="front-instructions">
+										<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
 										SQL Query
-										<span id="execute-button" class="run-button" onclick="runQueryWordCloud()"><i class="fa fa-line-chart"></i></span>
+										<span id="execute-button" class="run-button" onclick="runQueryWordCloud()"><i class="fa fa-pencil"></i></span>
 									</div>
 									<textarea id="query">Enter a query...</textarea>
 								</div>
@@ -122,6 +125,7 @@
 								</div>
 								<div class="back">
 									<div class="card-instructions" id="front-instructions">
+										<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
 										SQL Query
 										<span id="execute-button" class="run-button" onclick="runQueryHistogram()"><i class="fa fa-line-chart"></i></span>
 									</div>

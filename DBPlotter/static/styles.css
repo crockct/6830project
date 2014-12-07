@@ -161,6 +161,12 @@ body {
     color:#5264AE;
 }
 
+.remove-button {
+	font-size: 25px;
+	color: gray;
+	padding-right: 190px;
+}
+
 .run-button, .edit-button {
     font-size: 25px;
     color: gray;
