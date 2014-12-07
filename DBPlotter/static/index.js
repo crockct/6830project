@@ -1,7 +1,6 @@
 $(document).ready(function() {
     filepathBtnEvent();
-    tableNameBtnEvent();
-})
+});
 
 var filepathBtnEvent = function() {
     $("#filepath-btn").on("click", function(e) {
@@ -14,34 +13,81 @@ var filepathBtnEvent = function() {
             },
             success: function(data) {
                 table_names = [];
-                table_names.push('<li><a class="tablename">' + "tablename1" + '</a></li>');
+                table_names.push('<li><button class="table-name">tablename1</button></li>');
                 for (i in data) {
-                    table_names.push('<li><a href="tablecard?id=' + data[i] + '">' + data[i] + '</a></li>');
+                    // table_names.push('<li><a href="tablecard?id=' + data[i] + '">' + data[i] + '</a></li>');
+                    table_names.push('<li><button class="table-name" id="' + data[i] + '">' + data[i] + '</button></li>');
                 }
                 $('#tables-list').html(table_names.join(''));
+                tableNameBtnEvent();
             }
         })
     });
 }
-
 var tableNameBtnEvent = function() {
-    $(".tablename").on("click", function(e) {
-    	e.preventDefault();
-    	// get info needed to populate pie chart card
-    	$.ajax({
-            type: "GET",
-            url: "/tablecard/",
-            data: {
-                "tablename": $(this).text()
-            },
-            success: function(data) {
-                table_names = [];
-                table_names.push('<li><a class="tablename" href="table?id=' + "tablename1" + '">' + "tablename1" + '</a></li>');
-                for (i in data) {
-                    table_names.push('<li><a href="table?id=' + data[i] + '">' + data[i] + '</a></li>');
-                }
-                $('#tables-list').html(table_names.join(''));
-            }
-        })
+    $(".table-name").on("click", function(e) {
+        e.preventDefault();
+        // todo: hide instructions
+        // todo: display cards
+        var tablename = $(this).text();
+        console.log("getting card info for table: " + tablename);
+        getPieChartInfo(tablename);
+        getWordCloudInfo(tablename);
+        getHistogramInfo(tablename);
+    })
+}
+
+var getPieChartInfo = function(tablename) {
+    $.ajax({
+        // type: "GET",
+        dataType: "json",
+        url: "/pie_chart/",
+        data: {
+            "tablename": tablename
+        },
+        success: function(data) {
+            var pie_data = [];
+
+            $.each(data, function(key, val) {
+                pie_data.push({
+                    value: val,
+                    label: key,
+                    color: getRandomColor()
+                });
+            });
+
+            document.getElementById("execute-button").innerHTML = '<i class="fa fa-line-chart"></i>';
+            //document.getElementById("results-title-span").textContent = 'Pie Chart of Results';
+
+            document.querySelector(".flipper").classList.toggle("flip")
+            var canvas = document.getElementById("myPieChart");
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            myPieChart = new Chart(ctx).Pie(pie_data, {});
+        }
+    });
+}
+
+var getWordCloudInfo = function(tablename) {
+    $.ajax({
+        // type: "GET",
+        dataType: "json",
+        url: "/word_cloud/",
+        data: {
+            "tablename": tablename
+        },
+        success: function(data) {}
+    })
+}
+
+var getHistogramInfo = function(tablename) {
+    $.ajax({
+        // type: "GET",
+        dataType: "json",
+        url: "/histogram/",
+        data: {
+            "tablename": tablename
+        },
+        success: function(data) {}
     })
 }

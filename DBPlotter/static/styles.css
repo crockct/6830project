@@ -21,6 +21,19 @@ body {
   display: inline-block;
 }
 
+.table-name {
+  background:none!important;
+  border:none; 
+  padding:0!important;
+  /*border is optional*/
+  cursor: pointer;
+  color: #0000EE;
+}
+
+.table-name:hover {
+  text-decoration: underline;
+}
+
 .container {
     margin: 0 auto;
     width: 700px;
