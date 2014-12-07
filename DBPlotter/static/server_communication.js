@@ -3,6 +3,8 @@ $(document).ready(function() {
     tableClickedEvent();
 })
 
+
+
 var filepathBtnEvent = function() {
     $("#filepath-btn").on("click", function(e) {
         e.preventDefault();
@@ -36,12 +38,30 @@ var tableClickedEvent = function() {
             },
             success: function(data) {
                 for (i in data) {
-                    table_names.push('<li><a href="tablecard?id=' + data[i] + '">' + data[i] + '</a></li>');
+                    requestChart(i[0], i[1]);
+                }
+            }
+        })
+    });
+}
+
+var requestChart = function(chart_type, chart_id) {	
+	console.log("requesting chart. chart type, chart id: ");
+	console.log(chart_type);
+	console.log(chart_id);
+	 $.ajax({
+            type: "GET",
+            url: "/get_chart/",
+            data: {
+                "id": chart_id
+            },
+            success: function(data) {
+                for (i in data) {
+                    console.log(i);
                 }
                 $('#tables-list').html(table_names.join(''));
             }
         })
-    });
 }
 
 /*
