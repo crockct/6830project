@@ -1,4 +1,3 @@
-
 root = exports ? this
 
 Bubbles = () ->
@@ -456,4 +455,3 @@ $ ->
 
   # load our data
   d3.csv("data/#{text.file}", display)
-
