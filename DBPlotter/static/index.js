@@ -31,8 +31,10 @@ var filepathBtnEvent = function() {
 var tableNameBtnEvent = function() {
     $(".table-name").on("click", function(e) {
         e.preventDefault();
-        // todo: hide instructions
-        // todo: display cards
+        // hide instructions
+        $("#instructions").hide();
+        // display cards
+        $("#cards").show();
         var tablename = $(this).text();
         console.log("getting card info for table: " + tablename);
         getPieChartInfo(tablename);
