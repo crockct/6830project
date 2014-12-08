@@ -137,8 +137,12 @@ def get_tables(request):
     filename = request.GET.get('f', '')
 
     # Get list of tablenames from database
+    print "initializing connection"
     c = initialize_connection(filename)
+    print "enumerating tables"
     table_names = enumerate_tables(c)
+    print "hello"
+    print table_names
 
     # Set filename for this session
     request.session['filename'] = filename
