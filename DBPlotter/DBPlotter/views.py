@@ -140,7 +140,7 @@ def get_tables(request):
     print "initializing connection"
     c = initialize_connection(filename)
     print "enumerating tables"
-    table_names = enumerate_tables(c)
+    table_names = tables(c)
     print "hello"
     print table_names
 
