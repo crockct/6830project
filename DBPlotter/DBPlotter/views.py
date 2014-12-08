@@ -1,47 +1,134 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from collections import Counter
+
+import numpy as np
+import random
+import math
 
 import sqlite3
 import json 
 
-# TODO: Eventually have error checking; for example, not two-column, or neither is number
-# TODO: Fix browser compatibility issues (flickering, scattered card in Safari)
+# ===================================================
+#		HELPER FUNCTIONS
+# ===================================================
 
-# TODO: Better color scheme for pie chart (in JS) 
-# TODO: Add a 1D chart (word cloud) 
-# TODO: Fix page formatting (and font) and add more description and sample queries
-
-# TODO: Polish up server configuration and clean up useless files
-# TODO: Clean up JS code
-# TODO: Implement proper REST API 
-
-# IDEA: Intelligently process data of various dimensionalities into a chart type
-# IDEA: Automatically generate basic charts for a database
-
-
-# Helper function to check if a given string can be parsed into a number
+# Check if a given string can be parsed into a number
 def isNumerical(val):
-	try:
-		float(val)
-		return 1
-	except ValueError:
-		return 0
+        try:
+                float(val)
+                return 1
+        except ValueError:
+                return 0
 
 # Establish connection to given database file and return sqlite3 cursor
 def initialize_connection(db_filename):
     conn = sqlite3.connect(db_filename)
+    conn.text_factory = str
     return conn.cursor()
 
 # Determine list of tables in database, using provided sqlite3 cursor
-def enumerate_tables(c):
-    tables = []
+def tables(c):
+    table_list = []
 
     for row in c.execute("SELECT name FROM sqlite_master WHERE type='table';"):
-        tables.append(row[0].encode('ascii', 'ignore'))
+	table_list.append(row[0])
 
-    return tables
+    return table_list
+
+# Get schema for a given table
+def table_schema(c, table_name):
+    rows = []
+
+    for row in c.execute("pragma table_info(\'" + table_name + "\')"):
+	rows.append(row)
+
+    return rows
+
+# Get list of column names for a given table
+def table_columns(c, table_name):
+    c.execute('SELECT * FROM ' + table_name + ' LIMIT 1')
+    return [field_name[0] for field_name in c.description]
+
+# Get list of data types in a given table
+def table_types(c, table_name):
+    return [rows[2] for rows in table_schema(c, table_name)]
+
+# Get list of column names for the result of a given query
+def query_columns(c, query):
+    c.execute(query)
+    return [field_name[0] for field_name in c.description]
+
+# Evaluate query and return rows
+def evaluate_query(c, query):
+    rows = []
+
+    for row in c.execute(query):
+	rows.append(row)
+
+    return rows
+
+# Evaluate query and return random sample of rows
+def sample_query(c, query, n):
+    query += " ORDER BY RANDOM() LIMIT " + str(n)
+
+    return evaluate_query(c, query)
+
+def sample_column(c, table, column, n):
+    query = 'SELECT ' + table + '.' + column + ' FROM ' + table + ' WHERE ' + table + '.' + column + ' NOT null'
+    rows = sample_query(c, query, n)
+
+    return [row[0] for row in rows]
+
+def sample_columns(c, table, column1, column2, n):
+    query = 'SELECT ' + table + '.' + column1 + ', ' + table + '.' + column2 + ' FROM ' + table + ' WHERE ' + table + '.' + column1 + ' NOT null AND ' + table + '.' + column2 + ' NOT null'
+    rows = sample_query(c, query, n)
+
+    return [row[0] for row in rows], [row[1] for row in rows]
+
+def row_count(c, table):
+    return evaluate_query(c, 'SELECT COUNT(*) FROM ' + table)[0][0]
+
+# Calculate self-information for a set
+def self_information(X):
+    p = Counter(X)
+    lns = float(len(X))
+
+    return -sum( count/lns * math.log(count/lns, 2) for count in p.values())
+
+# Calculate self-information for a histogrammed set
+def entropy(H):
+    si = 0
+
+    tot = float(np.sum(H))
+
+    for i in range(H.shape[0]):
+	if H[i] > 0.0:
+	    si += (H[i] / tot) * np.log2((H[i] / tot))
+
+    return -si
+
+# Calculate mutual information for two set
+def mutual_information(H):
+    mi = 0
+
+    tot = float(np.sum(H))
+
+    for i in range(H.shape[0]):
+        for j in range(H.shape[1]):
+            fx = np.sum(H[i,:]) / tot
+            fy = np.sum(H[:,j]) / tot
+            if (fx > 0.0 and fy > 0.0 and H[i,j] > 0.0):
+                mi += (H[i,j] / tot) * np.log2( (H[i,j] / tot) / (fx * fy))
+
+    return mi
 
 
+# ===================================================
+#		    VIEWS
+# ===================================================
+
+# View to initialize session and return list of tables in database file
 def get_tables(request):
     filename = request.GET.get('f', '')
 
