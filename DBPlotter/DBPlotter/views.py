@@ -123,6 +123,9 @@ def mutual_information(H):
 
     return mi
 
+def generate_id():
+    return ''.join(random.choice('ABCDEFGHIJKL123456789') for i in range(16))
+
 
 # ===================================================
 #		    VIEWS
@@ -130,29 +133,59 @@ def mutual_information(H):
 
 # Initialize session and return list of tables in database file
 def get_tables(request):
+    # Get filename from request
     filename = request.GET.get('f', '')
 
+    # Get list of tablenames from database
     c = initialize_connection(filename)
     table_names = enumerate_tables(c)
+
+    # Set filename for this session
+    request.session['filename'] = filename
 
     return HttpResponse(json.dumps(table_names), content_type="application/json")
 
 # For a given table in the database, determine good charts using heuristics
 # Return list of chart types and chart ids
 def make_charts(request):
-    pass
+    # Get tablename from request
+    table = request.GET.get('t', '')
+
+    if table == '':
+	return HttpResponse('No table name specified!')
+
+    # Generate categorical chart using self-information scheme 
+    # Generate distribution chart using self-information scheme
+    # Generate functional chart using mutual-information scheme
+    # Generate word cloud based on heuristics for string characteristics?
+
+    # Return list of chart_type and chart_id pairs
+    return HttpResponse(test_id)
 
 # Provided a chart id (that the client got from make_charts), return chart data
 def get_chart(request):
-    pass
+    get_id = request.GET.get('i', 'None')
+    if not (get_id == 'None'):
+	return HttpResponse(request.session.get(get_id, 'no such chart'))
+    else:
+	return HttpResponse('no id supplied')
 
 # Process an arbitrary query and return data arranged appropriately for a given chart type
 def process_query(request):
-    pass
+    chart_type = request.GET.get('c', '')
+    query = request.GET.get('q', '')
 
-# End session
-def close(request):
-    pass
+    if chart_type == '':
+	return HttpResponse('No chart type specified!')
+
+    # Execute query and fetch rows
+    c = initialize_connection(request.session.get('filename', ''))
+    rows = evaluate_query(c, query)
+
+    # Organize into JSON according to chart type (USE HELPERS?)
+    # PIE CHART -- if 1d, use Counter, if 2d, string field is dict key
+    # HISTOGRAM -- 1d, use np.histogram
+    # LINE CHART -- 2d, return in order as float
 
 # ===================================================
 #		    OTHER
@@ -160,10 +193,6 @@ def close(request):
 
 # Handle query from a PIE CHART card (or any two-dimensional requester eventually)  
 def pie_chart(request):
-
-	# Print query for debugging purposes
-	print request.GET.get('q','')
-	print request.GET.get('d','')
 
 	# Open connection to database; currently just a file
 	conn = sqlite3.connect(request.GET.get('d',''));
