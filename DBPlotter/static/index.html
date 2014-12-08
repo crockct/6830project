@@ -43,18 +43,14 @@
 					</ol>
 					<!-- <button>Advanced</button> -->
 				</div>
-
-				<div id="instructions-cards-col" class="col-xs-10">
-						
-					<div id="instructions" class="container">
+				<div class="col-xs-10">
+					
+					<div id="instructions" class="">
 						<h1>Database Dashboard</h1>
 						<p class="authors">Mukarram Tahir, Katherine Hobbs, Colleen Rock</p>
 						<p>Enter the filepath for the database file in the form above and then select a table to view the graphs for the selected table.</p>
-					</div>
-
-					<div id="cards" style="display: none;">
-						<div class="header">
-							<div class="container">
+						<div class="example-queries">
+							<div class="">
 								<h3>Example Query</h3>
 								<p class="code">
 								SELECT d_labitems.test_name,
@@ -77,99 +73,38 @@
 								</p>
 							</div>
 						</div>
-						<div class="header">
-							<div class="container">
-								<h3>Pie Chart</h3>
-								<div id="flipper1" class="flipper flip">
-									<div class="card">
-										<div class="front">
-											<div class="card-instructions" id="back-instructions">
-												<span id="results-title-span" class="results-title"></span>
-												<span class="edit-button"><i class="fa fa-terminal"></i></span>
-											</div>
-											<div class="pie-chart">
-												<canvas id="myPieChart" width="520" height="260"></canvas>
-											</div>
+					</div>
+					<div id="cards" style="display: none;">
+						<div id="new-card" class="change-me" style="display: none;">
+							<div class="flipper flip">
+								<div class="card">
+									<div class="front">
+										<div class="card-instructions" id="front-instructions">
+											<span id="results-title-span" class="results-title"></span>
+											<span class="edit-button"><i class="fa fa-terminal"></i></span>
 										</div>
-										<div class="back">
-											<div class="card-instructions" id="front-instructions">
-												<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
-												SQL Query
-												
-												<span id="execute-button" class="run-button" onclick="runQueryPieChart()"><i class="fa fa-pencil"></i></span>
-												<textarea id="query" spellcheck="false">Enter a query...</textarea>
-											</div>
+										<div class="change-me">
+											<canvas class="change-me" width="520" height="260"></canvas>
 										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-						<div class="header">
-							<div class="container">
-								<h3>Word Cloud</h3>
-								<div id="flipper2" class="flipper flip">
-									<div class="card">
-										<div class="front">
-											<div class="card-instructions" id="back-instructions">
-												<span id="results-title-span" class="results-title"></span>
-												<span class="edit-button"><i class="fa fa-terminal"></i></span>
-											</div>
-											<div class="chart">
-												<canvas id="myWordCloud" width="520" height="260"></canvas>
-											</div>
-										</div>
-										<div class="chart">
-											<canvas id="myWordCloud" width="520" height="260"></canvas>
-										</div>
-										<div class="back">
-											<div class="card-instructions" id="front-instructions">
-												<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
-												SQL Query
-												<span id="execute-button" class="run-button" onclick="runQueryWordCloud()"><i class="fa fa-pencil"></i></span>
-												<textarea id="query">Enter a query...</textarea>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="header">
-							<div class="container">
-								<h3>Histogram</h3>
-								<div id="flipper3" class="flipper flip">
-									<div class="card">
-										<div class="front">
-											<div class="card-instructions" id="back-instructions">
-												<span id="results-title-span" class="results-title"></span>
-												<span class="edit-button"><i class="fa fa-terminal"></i></span>
-											</div>
-											<div class="chart">
-												<canvas id="myHistogram" width="520" height="260"></canvas>
-											</div>
-										</div>
-										<div class="chart">
-											<canvas id="myHistogram" width="520" height="260"></canvas>
-										</div>
-										<div class="back">
-											<div class="card-instructions" id="front-instructions">
-												<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
-												SQL Query
-												<span id="execute-button" class="run-button" onclick="runQueryHistogram()"><i class="fa fa-pencil"></i></span>
-												<textarea id="query">Enter a query...</textarea>
-											</div>
+									<div class="back">
+										<div class="card-instructions" id="back-instructions">
+											<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
+											SQL Query
+											<span id="execute-button" class="run-button" onclick="change-me()"><i class="fa fa-line-chart"></i><!-- <i class="fa fa-pencil"></i> --></span>
+											<textarea id="query" spellcheck="false">Enter a query...</textarea>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<!-- <div class="row">
-							<h3>Add card</h3>
-							<span class="edit-button" id="add_pie" onclick="addPieChart()"><i class="fa fa-pie-chart"></i></span><br></br>
-							<span class="edit-button" id="add_line" onclick="addLineChart()"><i class="fa fa-line-chart"></i></span><br></br>
-							<span class="edit-button" id="add_bar" onclick="addBarChart()"><i class="fa fa-bar-chart"></i></span>
-						</div> -->	
+									<h3>Add card</h3>
+									<span class="edit-button" id="add_pie" onclick="addPieChart()"><i class="fa fa-pie-chart"></i></span><br></br>
+									<span class="edit-button" id="add_line" onclick="addLineChart()"><i class="fa fa-line-chart"></i></span><br></br>
+									<span class="edit-button" id="add_bar" onclick="addBarChart()"><i class="fa fa-bar-chart"></i></span>
+						</div> -->
 					</div>
-
 				</div>
 			</div>
 			<div class="footer row">
@@ -178,6 +113,6 @@
 				</div>
 			</div>
 		</div>
-					
+		
 	</body>
 </html>

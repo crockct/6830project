@@ -68,12 +68,47 @@ var getCardData = function(card_type, card_query) {
             "query": card_query
         },
         success: function(data) {
-            for (i in data) {
-                console.log(i);
-            }
-            $('#tables-list').html(table_names.join(''));
+            addCard(card_type, card_query, data);
         }
     })
+}
+
+var addCard = function(card_type, card_query, data) {
+    var newCard = $("#new-card").clone();
+    newCard.attr('id',"");
+    
+    $("#new-card").before()
+    switch (card_type) {
+        case "pie_chart":
+            addPieChartCard();
+            break;
+        case "histogram":
+            addHistogramCard();
+            break;
+        case "line_chart":
+            addLineChartCard();
+            break;
+        default:
+            console.log("error: cannot render card type " + card_type);
+    }
+}
+
+var addPieChartCard = function(data) {
+    var pie_data = [];
+
+    $.each(data, function(key, val) {
+        pie_data.push({
+            value: val,
+            label: key,
+            color: getRandomColor()
+        });
+    });
+
+    document.querySelector(".flipper").classList.toggle("flip")
+    var canvas = document.getElementById("myChart");
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    myPieChart = new Chart(ctx).Pie(pie_data, {});
 }
 
 // // request all info needed to display the pie chart card for the given table
