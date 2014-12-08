@@ -128,7 +128,7 @@ def mutual_information(H):
 #		    VIEWS
 # ===================================================
 
-# View to initialize session and return list of tables in database file
+# Initialize session and return list of tables in database file
 def get_tables(request):
     filename = request.GET.get('f', '')
 
@@ -136,6 +136,27 @@ def get_tables(request):
     table_names = enumerate_tables(c)
 
     return HttpResponse(json.dumps(table_names), content_type="application/json")
+
+# For a given table in the database, determine good charts using heuristics
+# Return list of chart types and chart ids
+def make_charts(request):
+    pass
+
+# Provided a chart id (that the client got from make_charts), return chart data
+def get_chart(request):
+    pass
+
+# Process an arbitrary query and return data arranged appropriately for a given chart type
+def process_query(request):
+    pass
+
+# End session
+def close(request):
+    pass
+
+# ===================================================
+#		    OTHER
+# ===================================================
 
 # Handle query from a PIE CHART card (or any two-dimensional requester eventually)  
 def pie_chart(request):
