@@ -5,6 +5,7 @@ from collections import Counter
 import numpy as np
 import random
 import math
+import re
 
 import sqlite3
 import json 
@@ -80,6 +81,12 @@ def sample_column(c, table, column, n):
 
     return [row[0] for row in rows]
 
+def seq_column(c, table, column, n):
+    query = 'SELECT ' + table + '.' + column + ' FROM ' + table + ' WHERE ' + table + '.' + column + ' NOT null LIMIT ' + str(n)
+    rows = evaluate_query(c, query)
+
+    return [row[0] for row in rows]
+
 def sample_columns(c, table, column1, column2, n):
     query = 'SELECT ' + table + '.' + column1 + ', ' + table + '.' + column2 + ' FROM ' + table + ' WHERE ' + table + '.' + column1 + ' NOT null AND ' + table + '.' + column2 + ' NOT null'
     rows = sample_query(c, query, n)
@@ -138,42 +145,96 @@ def get_tables(request):
 
     # Get list of tablenames from database
     c = initialize_connection(filename)
-    table_names = enumerate_tables(c)
+    table_names = tables(c)
 
     # Set filename for this session
     request.session['filename'] = filename
 
     return HttpResponse(json.dumps(table_names), content_type="application/json")
 
-# For a given table in the database, determine good charts using heuristics
-# Return list of chart types and chart ids
-def make_charts(request):
+# For a given table in the database, determine good queries using heuristics
+# Return list of queries and chart types
+def make_queries(request):
     # Get tablename from request
-    table = request.GET.get('t', '')
+    table = request.GET.get('table_name', '')
 
     if table == '':
 	return HttpResponse('No table name specified!')
 
+    c = initialize_connection(request.session.get('filename', ''))
+    columns = table_columns(c, table)
+    types = table_types(c, table)
+    nr = row_count(c, table)
+
+    read_max = 100000
+
     # Generate categorical chart using self-information scheme 
+    sin_max = 0; 
+    i_max = -1;
+
+    mi_max = 0;
+    i2_max = -1;
+    j2_max = -1;
+
+    for i, t in enumerate(types):
+	if ('char' in t):
+	    # Heuristic: only consider string entries with less than 100 chars
+	    print t
+	    if int(re.sub('\D', '', t)) <= 100:
+		# Sample at most read_max rows
+		if nr < read_max: 
+		    X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
+		else:
+		    X = seq_column(c, table, columns[i], read_max)
+		l = len(Counter(X))
+		si = self_information(X)
+		if l > 0:
+		    sin = si / l
+		    if sin > sin_max:
+			i_max = i
+			sin_max = sin
+
+		    print columns[i], sin
+
+	for j in range(i + 1, len(types)):
+	    if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
+		if nr < read_max:
+		    X, Y = sample_columns(c, table, columns[i], columns[j], math.floor(0.3 * nr))
+		else:
+		    X, Y = sample_columns(c, table, columns[i], columns[j], read_max)
+
+		TBD = 100 # Replace this with sensible binning algo
+		H, xedges, yedges = np.histogram2d(X, Y, bins=TBD)
+		mi = mutual_information(H)
+
+		if mi > mi_max:
+		    mi_max = mi
+		    i2_max = i
+		    j2_max = j
+
+    # Introduce handling for case where q1 or q2 or q3 cannot be generated 
+    q1 = ''
+    q2 = ''
+
+    if not (i_max == -1):
+	q1 = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
+    if not (i2_max == -1) and not (j2_max == -1):
+	q2 = 'SELECT ' + table + '.' + columns[i2_max] + ', ' + table + '.' + columns[j2_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i2_max] + ' NOT null AND ' + table + '.' + columns[j2_max] + ' NOT null '
+
+    #return HttpResponse("<p>" + q1 + "</p><p>" + q2 + "</p>")
+    return HttpResponse(q1)
+
     # Generate distribution chart using self-information scheme
     # Generate functional chart using mutual-information scheme
     # Generate word cloud based on heuristics for string characteristics?
 
     # Return list of chart_type and chart_id pairs
-    return HttpResponse(test_id)
-
-# Provided a chart id (that the client got from make_charts), return chart data
-def get_chart(request):
-    get_id = request.GET.get('i', 'None')
-    if not (get_id == 'None'):
-	return HttpResponse(request.session.get(get_id, 'no such chart'))
-    else:
-	return HttpResponse('no id supplied')
+    #return HttpResponse(test_id)
 
 # Process an arbitrary query and return data arranged appropriately for a given chart type
 def process_query(request):
-    chart_type = request.GET.get('c', '')
-    query = request.GET.get('q', '')
+    chart_type = request.GET.get('chart_type', '')
+    query = request.GET.get('query', '')
 
     if chart_type == '':
 	return HttpResponse('No chart type specified!')
@@ -182,7 +243,7 @@ def process_query(request):
     c = initialize_connection(request.session.get('filename', ''))
     rows = evaluate_query(c, query)
 
-    # Organize into JSON according to chart type (USE HELPERS?)
+    # Organize into JSON according to chart type 
     # PIE CHART -- if 1d, use Counter, if 2d, string field is dict key
     # HISTOGRAM -- 1d, use np.histogram
     # LINE CHART -- 2d, return in order as float
