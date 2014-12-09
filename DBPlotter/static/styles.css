@@ -44,3 +44,7 @@ body {
     font-size: 14px;
     color:#5264AE;
 }
+
+.inline {
+  display: inline-block;
+}
