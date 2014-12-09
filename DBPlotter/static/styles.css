@@ -10,172 +10,16 @@ body {
   position: relative;
 }
 
-.left {
-	width: 20%;
-  display: inline-block;
-  vertical-align: top;
-}
-
-.middle {
-	width: 70%;
-	display: inline-block;
-}
-
-.right {
-	width: 5%;
-  display: inline-block;
-  vertical-align: top;
-  text-align: center;
-}
-
 .table-name {
   background:none!important;
   border:none; 
   padding:0!important;
-  /*border is optional*/
   cursor: pointer;
   color: #0000EE;
 }
 
 .table-name:hover {
   text-decoration: underline;
-}
-
-.container {
-    margin: 0 auto;
-    width: 700px;
-}
-
-.card, .footer {
-    overflow: hidden;
-}
-
-.cta {
-    margin: 10px 0;
-    text-align: right;
-}
-
-.cta a {
-    border-radius: 3px;
-    display: inline-block;
-    font-weight: 600;
-    margin: 0 10px;
-    padding: 8px 24px;
-    text-decoration: none;
-}
-
-.card {
-    padding: 40px 0 0;
-}
-
-.card .cta p {
-    border: 3px solid;
-    color: black;
-}
-
-.card .cta p:hover {
-    background: #d3d3d3;
-    cursor: pointer;
-}
-
-.card {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-    font-size: 18px;
-    margin: 25px 0 20px;
-    height: 360px;
-    box-sizing: border-box;
-    float: left;
-    padding: 20px 30px;
-    width: 100%;
-}
-
-.flipper.flip {
-    transform: rotateY(180deg);
-}
-
-/* flip speed goes here */
-.flipper {
-    width:600px;
-    margin: 0 auto;
-    transition: 0.9s;
-    transform-style: preserve-3d;
-}
-
-/* hide back of pane during swap */
-.front, .back {
-    backface-visibility: hidden;
-    position: absolute;
-    top: 40px;
-    width: 90%;
-}
-
-/* front pane, placed above back */
-.front {
-    z-index: 2;
-    /* for firefox 31 */
-    transform: rotateY(0deg);
-}
-
-/* back, initially hidden pane */
-.back {
-    transform: rotateY(180deg);
-}
-
-.card-instructions {
-    line-height: 1.5;
-    margin-bottom: 20px;
-    opacity: 0.8;
-}
-
-.back textarea {
-    background: #000;
-    border: none;
-    box-sizing: border-box;
-    color: #fff;
-    font-size: 14px;
-    font-family: "source-code-pro";
-    font-weight: 500;
-    height: 260px;
-    padding: 10px;
-    resize: none;
-    width: 100%;
-}
-
-.back .pie-chart {
-    border: none;
-    box-sizing: border-box;
-    color: #fff;
-    height: 260px;
-    padding: 10px;
-    resize: none;
-    width: 100%;
-}
-
-.back canvas {
-}
-
-.code {
-    font-size: 14px;
-    font-family: "source-code-pro";
-    font-weight: 500;
-    color:#5264AE;
-}
-
-.remove-button {
-	font-size: 25px;
-	color: gray;
-	padding-right: 190px;
-}
-
-.run-button, .edit-button {
-    font-size: 25px;
-    color: gray;
-    float: right; 
-    cursor: pointer;
-}
-
-.results-title {
-    float: left;
 }
 
 .footer {
@@ -191,63 +35,6 @@ body {
 
 .created-by a {
     color: black;
-}
-
-/* quoted (temporarily) from scotch.io google materials design with css3 tutorial */ 
-.group        { 
-  position:relative; 
-  margin-bottom:45px; 
-}
-input         {
-  font-size:18px;
-  padding:10px 10px 10px 5px;
-  display:block;
-  width:600px;
-  border:none;
-  border-bottom:1px solid #757575;
-}
-input:focus     { outline:none; }
-
-label          {
-  color:#999; 
-  font-size:18px;
-  font-weight:normal;
-  position:absolute;
-  pointer-events:none;
-  left:5px;
-  top:10px;
-  transition:0.2s ease all; 
-}
-
-input:focus ~ label, input:valid ~ label     {
-  top:-20px;
-  font-size:14px;
-  color:#5264AE;
-}
-
-.bar  { position:relative; display:block; width:615px; }
-.bar:before, .bar:after   {
-  content:'';
-  height:2px; 
-  width:0;
-  bottom:1px; 
-  position:absolute;
-  background:#5264AE; 
-  transition:0.2s ease all; 
-}
-.bar:before {
-  left:50%;
-}
-.bar:after {
-  right:50%; 
-}
-
-input:focus ~ .bar:before, input:focus ~ .bar:after {
-  width:50%;
-}
-
-form {
-    padding-top: 25px;
 }
 
 .authors {

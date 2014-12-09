@@ -5,7 +5,8 @@
 		<!-- CSS files -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="styles.css" media="screen">
+		<link rel="stylesheet" href="styles.css">
+		<link rel="stylesheet" href="cards.css">
 		<link rel="stylesheet" href="font-awesome.css">
 		<!-- javascript scripts -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -44,7 +45,6 @@
 					<!-- <button>Advanced</button> -->
 				</div>
 				<div class="col-xs-10">
-					
 					<div id="instructions" class="">
 						<h1>Database Dashboard</h1>
 						<p class="authors">Mukarram Tahir, Katherine Hobbs, Colleen Rock</p>
@@ -74,14 +74,16 @@
 							</div>
 						</div>
 					</div>
-					<div id="cards" style="display: none;">
+					<div id="card-div" style="display: none;">
+						<div class="row">
+							<h3>Add a card</h3>
+							<button id="add_pie" onclick="addCard('pie_chart')" class="btn btn-default btn-lg"><span><i class="fa fa-pie-chart"></i></span></button>
+							<button id="add_line" onclick="addCard('line_chart')" class="btn btn-default btn-lg"><span><i class="fa fa-line-chart"></i></span></button>
+							<button id="add_bar" onclick="addCard('histogram')" class="btn btn-default btn-lg"><span><i class="fa fa-bar-chart"></i></span></button>
+						</div>
+						<div id="cards">
+						</div>
 					</div>
-					<!-- <div class="row">
-						<h3>Add card</h3>
-						<span class="edit-button" id="add_pie" onclick="addPieChart()"><i class="fa fa-pie-chart"></i></span><br></br>
-						<span class="edit-button" id="add_line" onclick="addLineChart()"><i class="fa fa-line-chart"></i></span><br></br>
-						<span class="edit-button" id="add_bar" onclick="addBarChart()"><i class="fa fa-bar-chart"></i></span>
-					</div> -->
 				</div>
 			</div>
 			<div class="footer row">
