@@ -45,15 +45,15 @@ var tableNameBtnEvent = function() {
         $("#cards").html('');
         // display cards
         $("#card-div").show();
-        var tablename = $(this).text();
+        var table_name = $(this).text();
         $.ajax({
             type: "GET",
             url: "/make_queries/",
             data: {
-                "table_name": $(this).text()
+                "table_name": table_name
             },
             success: function(data) {
-                console.log(data);
+                $(".selected-table-name").text(table_name);
                 $.each(data, function(card_type, card_query) {
                     // add a new blank card to the UI
                     var newCard = addCard(card_type, card_query);
