@@ -48,11 +48,11 @@ var tableNameBtnEvent = function() {
             success: function(data) {
                 console.log("data:");
                 console.log(data);
-                for (i in data) {
-                    var card_type = i[0];
-                    var card_query = i[1];
+                $.each(data, function(card_type, card_query) {
+                    console.log("card type: " + card_type);
+                    console.log("card query: " + card_query);
                     getCardData(card_type, card_query);
-                }
+                });
             }
         });
     });
@@ -61,7 +61,7 @@ var tableNameBtnEvent = function() {
 var getCardData = function(card_type, card_query) {
     console.log("requesting chart...");
     console.log("card type: " + card_type);
-    console.log("cardquery: " + card_query);
+    console.log("card query: " + card_query);
     $.ajax({
         type: "GET",
         url: "/process_query/",
