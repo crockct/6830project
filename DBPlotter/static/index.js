@@ -3,7 +3,6 @@ $(document).ready(function() {
         url: "/close/",
         async: false,
         success: function(data) {
-            console.log(data);
             filepathBtnEvent();
             $("#filepath").focus().select();
         }
@@ -21,9 +20,12 @@ var filepathBtnEvent = function() {
                 "f": $('#filepath').val()
             },
             success: function(data) {
-                table_names = [];
+                var table_names = [];
                 for (var i in data) {
-                    table_names.push('<li><button class="table-name" id="' + data[i] + '">' + data[i] + '</button></li>');
+                    var table_name = data[i];
+                    table_names.push('<li><button class="table-name" id="' + table_name + '">' + table_name + '</button></li>');
+                    // add the table name to the hash map of table names to cards
+                    tableCards[table_name] = [];
                 }
                 $('#tables-list').html(table_names.join(''));
                 tableNameBtnEvent();
@@ -46,20 +48,30 @@ var tableNameBtnEvent = function() {
         // display cards
         $("#card-div").show();
         var table_name = $(this).text();
-        $.ajax({
-            type: "GET",
-            url: "/make_queries/",
-            data: {
-                "table_name": table_name
-            },
-            success: function(data) {
-                $(".selected-table-name").text(table_name);
-                $.each(data, function(card_type, card_query) {
-                    // add a new blank card to the UI
-                    var newCard = addCard(card_type, card_query);
-                    executeQuery(newCard, card_type, card_query);
-                });
+        var savedTableCards = tableCards[table_name];
+        // if there are no saved cards for a table, request cards from the server
+        if ($.isEmptyObject(savedTableCards)) {
+            $.ajax({
+                type: "GET",
+                url: "/make_queries/",
+                data: {
+                    "table_name": table_name
+                },
+                success: function(data) {
+                    $(".selected-table-name").text(table_name);
+                    $.each(data, function(card_type, card_query) { // add a new blank card to the UI
+                        var newCard = addCard(card_type, card_query, 'new');
+                        executeQuery(newCard, card_type, card_query);
+                    });
+                }
+            });
+        } else {
+            var savedtableCards = tableCards[table_name];
+            for (var i in savedtableCards) {
+                var info = savedtableCards[i];
+                var newCard = addCard(info.card_type, info.card_query, 'old');
+                executeQuery(newCard, info.card_type, info.card_query);
             }
-        });
+        }
     });
 };

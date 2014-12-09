@@ -31,3 +31,7 @@
     width: 520px;
     height: 260px;
 }
+
+.title {
+    float: left;
+}

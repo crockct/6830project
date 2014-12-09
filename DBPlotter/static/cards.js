@@ -1,7 +1,8 @@
 var tableCards = {};
 
 // adds a blank card to the UI for the given type
-var addCard = function(card_type, card_query) {
+var addCard = function(card_type, card_query, status) {
+    var table_name = $(".selected-table-name").text();
     var newCard;
     $.ajax({
         url: 'card.html',
@@ -13,8 +14,15 @@ var addCard = function(card_type, card_query) {
     newCard.attr('data-card-type', card_type);
     newCard.find(".execute-button").attr('data-card-type', card_type);
     newCard.find(".query-text").text(card_query);
+    newCard.find(".chart-type").text(card_type);
     attachCardBtnListeners(newCard);
     $("#cards").prepend(newCard);
+    if (status == 'new') {
+        tableCards[table_name].push({
+            "card_type": card_type,
+            "card_query": card_query
+        });
+    }
     newCard.find(".query-text").focus().select();
     return newCard;
 };
@@ -32,15 +40,17 @@ var executeQuery = function(card, card_type, card_query) {
             "query": card_query
         },
         success: function(data) {
-            chart_data = data;
+            title = data.title;
+            chart_data = data.data;
         }
     });
-    addChart(card, card_type, chart_data);
+    addChart(card, card_type, chart_data, title);
     showChart(card);
 };
 
 // render the chart on the card given the data
-var addChart = function(card, card_type, data) {
+var addChart = function(card, card_type, data, title) {
+    card.find(".chart-title").text(title);
     card.find(".canvas-div").html('<canvas class="canvas" width="520" height="260"></canvas>');
     switch (card_type) {
         case "pie_chart":
