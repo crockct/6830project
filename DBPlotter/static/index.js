@@ -46,6 +46,7 @@ var tableNameBtnEvent = function() {
                 "table_name": $(this).text()
             },
             success: function(data) {
+                console.log(data);
                 $.each(data, function(card_type, card_query) {
                     // add a new blank card to the UI
                     var newCard = addCard(card_type, card_query);
