@@ -1,7 +1,7 @@
 var tableCards = {};
 
 // adds a blank card to the UI for the given type
-var addCard = function(card_type, card_query) {
+var addCard = function(card_id, card_type, card_query) {
     var newCard;
     $.ajax({
         url: 'card.html',
@@ -10,6 +10,7 @@ var addCard = function(card_type, card_query) {
             newCard = $(data);
         }
     });
+    newCard.attr('id', card_id);
     newCard.attr('data-card-type', card_type);
     newCard.find(".execute-button").attr('data-card-type', card_type);
     newCard.find(".query-text").text(card_query);
