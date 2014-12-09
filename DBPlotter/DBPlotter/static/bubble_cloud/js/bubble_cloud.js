@@ -1,20 +1,15 @@
-$(document).ready(function() {
-var Bubbles, root, texts;
-// compiled coffee file
-root = typeof exports !== "undefined" && exports !== null ? exports : this;
-
-  var data = [
+var data = [
 	{"text": "chicken", "count": 10}, 
 	{"text": "dog", "count": 30},
 	{"text": "rabbit", "count": 100},
 	{"text": "human", "count": 1}];
+console.log(data);
 
-Bubbles = function() {
-  var chart, clear, click, collide, collisionPadding, connectEvents, data, force, gravity, hashchange, height, idValue, jitter, label, margin, maxRadius, minCollisionRadius, mouseout, mouseover, node, rScale, rValue, textValue, tick, transformData, update, updateActive, updateLabels, updateNodes, width;
+
+var Bubbles = function() {
+  var chart, clear, click, collide, collisionPadding, connectEvents, force, gravity, hashchange, height, idValue, jitter, label, margin, maxRadius, minCollisionRadius, mouseout, mouseover, node, rScale, rValue, textValue, tick, transformData, update, updateActive, updateLabels, updateNodes, width;
   width = 980;
   height = 510;
-
-	
   node = null;
   label = null;
   margin = {
@@ -42,14 +37,14 @@ Bubbles = function() {
   //  - should make it easier to switch out dataset
   //  for your own
   idValue = function(d) {
-    return d.name;
+    return d.text;
   };
   
   //function to define what to display in each bubble
   //again, abstracted to ease migration to 
   //  a different dataset if desired
   textValue = function(d) {
-    return d.name;
+    return d.text;
   };
   
   // collision constants 
@@ -58,19 +53,7 @@ Bubbles = function() {
   
   // force layout variables
   jitter = 0.5;
-  
-  // get dataset in format we want
-  transformData = function(rawData) {
-    rawData.forEach(function(d) {
-      d.count = parseInt(d.count);
-      return rawData.sort(function() {
-        return 0.5 - Math.random();
-      });
-    });
-	console.log(rawData);
-    return rawData;
-  };
-  
+   
   /*
    tick callback function will be executed for every
    iteration of the force simulation
@@ -105,8 +88,9 @@ Bubbles = function() {
     return selection.each(function(rawData) {
 	  console.log("selection: ");
 	  console.log(selection);
+	  console.log("rawdata");
+	  console.log(rawData);
       var maxDomainValue, svg, svgEnter;
-      data = transformData(rawData);
       maxDomainValue = d3.max(data, function(d) {
         return rValue(d);
       });
@@ -288,29 +272,9 @@ Bubbles = function() {
   return chart;
 };
 
-root.plotData = function(selector, data, plot) {
+plotData = function(selector, data, plot) {
   return d3.select(selector).datum(data).call(plot);
 };
-
-/*texts = [
-  {
-    key: "sherlock",
-    file: "top_sherlock.csv",
-    name: "The Adventures of Sherlock Holmes"
-  }, {
-    key: "aesop",
-    file: "top_aesop.csv",
-    name: "Aesop's Fables"
-  }, {
-    key: "alice",
-    file: "alice.csv",
-    name: "Alice's Adventures in Wonderland"
-  }, {
-    key: "gulliver",
-    file: "top_gulliver.csv",
-    name: "Gulliver's Travels"
-  }
-];*/
 
 $(function() {
   var display, key, plot, text;
@@ -318,28 +282,12 @@ $(function() {
   display = function(data) {
 	console.log("display");
 	console.log(data);
-    return root.plotData("#vis", data, plot); // I prepended root. when it said plotData not defined
+    return plotData("#vis", data, plot); // I prepended when it said plotData not defined
   };
-  key = decodeURIComponent(location.search).replace("?", "");
-  /*text = texts.filter(function(t) {
-    return t.key === key;
-  })[0];
-  if (!text) {
-    text = texts[0];
-  }
-  $("#text-select").val(key);
-  */
+
   d3.select("#jitter").on("input", function() {
     return plot.jitter(parseFloat(this.output.value));
   });
-  /*d3.select("#text-select").on("change", function(e) {
-    key = $(this).val();
-    location.replace("#");
-    return location.search = encodeURIComponent(key);
-  });
-  //d3.select("#book-title").html(text.name);
-  */
+ 
   return d3.csv("data/Book1.csv", display);
-});
-
 });
