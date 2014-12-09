@@ -182,6 +182,7 @@ def make_queries(request):
     i2_max = -1;
     j2_max = -1;
 
+    # Generate distribution chart using self-information scheme
     for i, t in enumerate(types):
 	if ('char' in t):
 	    # Heuristic: only consider string entries with less than 100 chars
@@ -202,6 +203,9 @@ def make_queries(request):
 
 		    print columns[i], sin
 
+	# Generate word cloud based on heuristics for string characteristics?
+
+	# Generate functional chart using mutual-information scheme
 	for j in range(i + 1, len(types)):
 	    if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
 		if nr < read_max:
@@ -229,9 +233,6 @@ def make_queries(request):
 
     return HttpResponse(json.dumps(queries), content_type="application/json")
 
-    # Generate distribution chart using self-information scheme
-    # Generate functional chart using mutual-information scheme
-    # Generate word cloud based on heuristics for string characteristics?
 
     # Return list of chart_type and chart_id pairs
     #return HttpResponse(test_id)
@@ -282,26 +283,6 @@ def close(request):
 #		    OTHER
 # ===================================================
 
-# Handle query from a PIE CHART card (or any two-dimensional requester eventually)  
-def pie_chart(request):
-
-	# Open connection to database; currently just a file
-	conn = sqlite3.connect(request.GET.get('d',''));
-	c = conn.cursor()
-	
-	# Variable to hold query output as dictionary
-	response_data = {}
-
-	# Assuming TWO-COLUMN output from query, put string-type value as key of a dictionary
-	for row in c.execute(request.GET.get('q','')): 
-		if isNumerical(row[0]):
-			response_data[row[1]] = row[0]
-		else:
-			response_data[row[0]] = row[1]
-
-	# Construct a JSON from dictionary and return
-	return HttpResponse(json.dumps(response_data), content_type="application/json")
-	
 # Handle query from a WORD CLOUD card (or any two-dimensional requester eventually)  
 def word_cloud(request):
 	return render_to_response('/DBPlotter/static/bubble_cloud/index.html')
