@@ -1,60 +1,26 @@
-<!-- <div class="chart-card" data-card-type="">
-    <div class="flipper">
-        <div class="card">
-            <div class="front">
-                <div class="card-instructions" id="front-instructions">
-                    <span id="results-title-span" class="results-title"></span>
-                    <button class="edit-button btn btn-default btn-sm"><span><i class="fa fa-pencil"></i></span></button>
-                </div>
-                <div>
-                    <canvas width="520" height="260"></canvas>
-                </div>
-            </div>
-            <div class="back">
-                <div class="card-instructions" id="back-instructions">
-                    SQL Query
-                    <button class="execute-button btn btn-default btn-sm" data-card-type=""><span><i class="fa fa-line-chart"></i></span></button>
-                    <textarea id="query" spellcheck="false">Enter a query...</textarea>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="cards.css">
-<link rel="stylesheet" href="font-awesome.css">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
-<script src="cards.js"></script>
-<script src="index.js"></script>
-<script src="chart.js"></script>
 <div class="card">
     <div class="query">
         <div class="buttons">
-            <button class="flip-button btn btn-default btn-sm"><span><i class="fa fa-close">flip</i></span></button>
-            <button class="remove-button btn btn-default btn-sm"><span><i class="fa fa-close">close</i></span></button>
+            <button class="flip-button btn btn-default btn"><span><i class="fa fa-rotate-right"></i></span></button>
+            <button class="remove-button btn btn-default btn"><span><i class="fa fa-close"></i></span></button>
         </div>
-        <div>
-            <textarea id="query" spellcheck="false">Enter a query...</textarea>
+        <div class="query-div">
+            <textarea class="query-text" spellcheck="false" placeholder="Enter a query..."></textarea>
         </div>
-        <div class>
-            <button class="execute-button btn btn-default btn-sm"><span><i class="fa fa-pencil">edit</i></span></button>
+        <div class="buttons">
+            <button class="execute-button btn btn-default btn"><span><i class="fa fa-line-chart"></i></span></button>
         </div>
     </div>
     <div class="chart hide">
-        <div class>
-            <button class="flip-button btn btn-default btn-sm"><span><i class="fa fa-close">flip</i></span></button>
-            <button class="remove-button btn btn-default btn-sm"><span><i class="fa fa-close">close</i></span></button>
+        <div class="buttons">
+            <button class="flip-button btn btn-default btn"><span><i class="fa fa-rotate-left"></i></span></button>
+            <button class="remove-button btn btn-default btn"><span><i class="fa fa-close"></i></span></button>
         </div>
-        <div>
-            <canvas width="520" height="260"></canvas>
+        <div class="canvas-div">
+            <canvas class="canvas"></canvas>
         </div>
-        <div class>
-            <button class="edit-button btn btn-default btn-sm"><span><i class="fa fa-pencil">execute</i></span></button>
+        <div class="buttons">
+            <button class="edit-button btn btn-default btn"><span><i class="fa fa-pencil"></i></span></button>
         </div>
     </div>
 </div>
-<!-- <button class="remove-button btn btn-default btn-sm"><span><i class="fa fa-remove"></i></span></button> -->

@@ -1,5 +1,6 @@
 $(document).ready(function() {
     filepathBtnEvent();
+    $("#filepath").focus().select();
 });
 
 // sends the DB filepath to the server and requests the list of table names for the given DB
@@ -47,13 +48,8 @@ var tableNameBtnEvent = function() {
             success: function(data) {
                 $.each(data, function(card_type, card_query) {
                     // add a new blank card to the UI
-                    var newCard = addCard(card_type);
-                    // get the data necessary to render the chart on the card
-                    var card_data = executeQuery(card_type, card_query);
-                    // render the chart on the card
-                    addChart(card_type, newCard, card_data);
-                    // flip the card over to display the graph
-                    newCard.find(".flipper").removeClass("flip");
+                    var newCard = addCard(card_type, card_query);
+                    executeQuery(newCard, card_type, card_query);
                 });
             }
         });
