@@ -25,7 +25,7 @@ var filepathBtnEvent = function() {
                     var table_name = data[i];
                     table_names.push('<li><button class="table-name" id="' + table_name + '">' + table_name + '</button></li>');
                     // add the table name to the hash map of table names to cards
-                    tableCards[table_name] = [];
+                    tableCards[table_name] = {};
                 }
                 $('#tables-list').html(table_names.join(''));
                 tableNameBtnEvent();
@@ -48,6 +48,7 @@ var tableNameBtnEvent = function() {
         // display cards
         $("#card-div").show();
         var table_name = $(this).text();
+        $(".selected-table-name").text(table_name);
         var savedTableCards = tableCards[table_name];
         // if there are no saved cards for a table, request cards from the server
         if ($.isEmptyObject(savedTableCards)) {
@@ -58,7 +59,6 @@ var tableNameBtnEvent = function() {
                     "table_name": table_name
                 },
                 success: function(data) {
-                    $(".selected-table-name").text(table_name);
                     $.each(data, function(card_type, card_query) { // add a new blank card to the UI
                         var newCard = addCard(card_type, card_query, 'new');
                         executeQuery(newCard, card_type, card_query);
@@ -67,11 +67,10 @@ var tableNameBtnEvent = function() {
             });
         } else {
             var savedtableCards = tableCards[table_name];
-            for (var i in savedtableCards) {
-                var info = savedtableCards[i];
+            $.each(savedtableCards, function(card_id, info) {
                 var newCard = addCard(info.card_type, info.card_query, 'old');
                 executeQuery(newCard, info.card_type, info.card_query);
-            }
+            });
         }
     });
 };

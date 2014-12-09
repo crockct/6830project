@@ -3,6 +3,8 @@ var tableCards = {};
 // adds a blank card to the UI for the given type
 var addCard = function(card_type, card_query, status) {
     var table_name = $(".selected-table-name").text();
+    var card_id = table_name + "-card-" + getRandomColor();
+    console.log(tableCards[table_name]);
     var newCard;
     $.ajax({
         url: 'card.html',
@@ -11,6 +13,7 @@ var addCard = function(card_type, card_query, status) {
             newCard = $(data);
         }
     });
+    newCard.attr('id', card_id);
     newCard.attr('data-card-type', card_type);
     newCard.find(".execute-button").attr('data-card-type', card_type);
     newCard.find(".query-text").text(card_query);
@@ -18,10 +21,10 @@ var addCard = function(card_type, card_query, status) {
     attachCardBtnListeners(newCard);
     $("#cards").prepend(newCard);
     if (status == 'new') {
-        tableCards[table_name].push({
+        tableCards[table_name][card_id] = {
             "card_type": card_type,
             "card_query": card_query
-        });
+        };
     }
     newCard.find(".query-text").focus().select();
     return newCard;
@@ -167,8 +170,11 @@ var executeQueryBtnEvent = function(card) {
     var executeQueryBtn = card.find(".execute-button");
     executeQueryBtn.on('click', function(e) {
         e.preventDefault();
+        var table_name = $(".selected-table-name").text();
+        var card_id = card.attr('id');
         var card_type = card.data("card-type");
         var card_query = card.find(".query-text").val();
+        tableCards[table_name][card_id]['card_query'] = card_query;
         executeQuery(card, card_type, card_query);
     });
 };
