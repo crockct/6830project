@@ -46,14 +46,16 @@ var tableNameBtnEvent = function() {
                 "table_name": $(this).text()
             },
             success: function(data) {
+                console.log("bogus data");
+                console.log(data);
                 for (i in data) {
                     var card_type = i[0];
                     var card_query = i[1];
                     getCardData(card_type, card_query);
                 }
             }
-        })
-    })
+        });
+    });
 }
 
 var getCardData = function(card_type, card_query) {

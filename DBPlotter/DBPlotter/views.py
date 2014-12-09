@@ -158,6 +158,10 @@ def make_queries(request):
     # Get tablename from request
     table = request.GET.get('table_name', '')
 
+    # TODO: delete the lines below this
+    if table == 'tablename1':
+        return HttpResponse({'pie_chart':'sql_query'});
+
     if table == '':
 	return HttpResponse('No table name specified!')
 
