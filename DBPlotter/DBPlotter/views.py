@@ -135,7 +135,7 @@ def generate_id():
 
 
 # ===================================================
-#		    VIEWS
+#                   VIEWS
 # ===================================================
 
 # Initialize session and return list of tables in database file
@@ -202,21 +202,21 @@ def make_queries(request):
 
                         print columns[i], sin
 
-	for j in range(i + 1, len(types)):
-	    if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
-		if nr < read_max:
-		    X, Y = sample_columns(c, table, columns[i], columns[j], math.floor(0.3 * nr))
-		else:
-		    X, Y = sample_columns(c, table, columns[i], columns[j], read_max)
+        for j in range(i + 1, len(types)):
+            if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
+                if nr < read_max:
+                    X, Y = sample_columns(c, table, columns[i], columns[j], math.floor(0.3 * nr))
+                else:
+                    X, Y = sample_columns(c, table, columns[i], columns[j], read_max)
 
-		TBD = 100 # Replace this with sensible binning algo
-		H, xedges, yedges = np.histogram2d(X, Y, bins=TBD)
-		mi = mutual_information(H)
+                TBD = 100 # Replace this with sensible binning algo
+                H, xedges, yedges = np.histogram2d(X, Y, bins=TBD)
+                mi = mutual_information(H)
 
-		if mi > mi_max:
-		    mi_max = mi
-		    i2_max = i
-		    j2_max = j
+                if mi > mi_max:
+                    mi_max = mi
+                    i2_max = i
+                    j2_max = j
 
     queries = {}
 
@@ -254,7 +254,7 @@ def process_query(request):
     # Organize into JSON according to chart type 
     # PIE CHART -- if 1d, use Counter, if 2d, string field is dict key
     if chart_type == 'pie_chart':
-	temp_data = {}
+        temp_data = {}
         if len(rows[0]) == 1:
             X = [row[0] for row in rows]
             temp_data = Counter(X)
@@ -264,24 +264,24 @@ def process_query(request):
                     temp_data[row[1]] = row[0]
                 else:
                     temp_data[row[0]] = row[1]
-	response_data = OrderedDict(sorted(temp_data.items(), key=lambda t: t[1]))
+        response_data = OrderedDict(sorted(temp_data.items(), key=lambda t: t[1]))
 
     # HISTOGRAM -- 1d, use np.histogram
     if chart_type == 'histogram':
-	#response_data['labels'] = [row[0] for row in rows]
-	#response_data['datasets'] = {}
-	#response_data['datasets']['label'] = ""
-	#response_data['datasets']['data'] = [row[1] for row in rows]
-	pass
+        #response_data['labels'] = [row[0] for row in rows]
+        #response_data['datasets'] = {}
+        #response_data['datasets']['label'] = ""
+        #response_data['datasets']['data'] = [row[1] for row in rows]
+        pass
  
     # LINE CHART -- 2d, return in order as float
     if chart_type == 'line_chart':
-	rows = random.sample(rows, 25)
-	response_data['labels'] = [row[0] for row in rows]
-	response_data['datasets'] = []
-	response_data['datasets'].append({})
-	response_data['datasets'][0]['label'] = "test"
-	response_data['datasets'][0]['data'] = [row[1] for row in rows]
+        rows = random.sample(rows, 25)
+        response_data['labels'] = [row[0] for row in rows]
+        response_data['datasets'] = []
+        response_data['datasets'].append({})
+        response_data['datasets'][0]['label'] = "test"
+        response_data['datasets'][0]['data'] = [row[1] for row in rows]
 
     # Construct a JSON from dictionary and return
     return HttpResponse(json.dumps(response_data), content_type="application/json")
