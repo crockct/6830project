@@ -46,11 +46,7 @@ var tableNameBtnEvent = function() {
                 "table_name": $(this).text()
             },
             success: function(data) {
-                console.log("data:");
-                console.log(data);
                 $.each(data, function(card_type, card_query) {
-                    console.log("card type: " + card_type);
-                    console.log("card query: " + card_query);
                     getCardData(card_type, card_query);
                 });
             }
@@ -66,10 +62,12 @@ var getCardData = function(card_type, card_query) {
         type: "GET",
         url: "/process_query/",
         data: {
-            "card_type": card_type,
+            "chart_type": card_type,
             "query": card_query
         },
         success: function(data) {
+            console.log("data to plot");
+            console.log(data);
             addCard(card_type, card_query, data);
         }
     })
