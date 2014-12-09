@@ -185,6 +185,9 @@ def make_queries(request):
     i2_max = -1;
     j2_max = -1;
 
+    si_max = 0;
+    i3_max = 0;
+
     for i, t in enumerate(types):
         if ('char' in t):
             # Heuristic: only consider string entries with less than 100 chars
@@ -204,6 +207,18 @@ def make_queries(request):
                         sin_max = sin
 
                         print columns[i], sin
+        if ('int' in t) or ('double' in t):
+            if nr < read_max:
+                X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
+            else:
+                X = seq_column(c, table, columns[i], read_max)
+            TBD = 100
+            h1, edges = np.histogram(X, bins=TBD)
+            si3 = entropy(h1)
+            if si3 > si_max:
+                si_max = si3
+                i3_max = i
+            
 
         for j in range(i + 1, len(types)):
             if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
@@ -227,6 +242,8 @@ def make_queries(request):
         queries['pie_chart'] = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
     if not (i2_max == -1) and not (j2_max == -1):
         queries['line_chart'] = 'SELECT ' + table + '.' + columns[i2_max] + ', ' + table + '.' + columns[j2_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i2_max] + ' NOT null AND ' + table + '.' + columns[j2_max] + ' NOT null '
+    if not (i3_max == -1):
+        queries['histogram'] = 'SELECT ' + table + '.' + columns[i3_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i3_max] + ' NOT null '
 
     request.session[table] = json.dumps(queries)
 
@@ -275,12 +292,14 @@ def process_query(request):
 
     # HISTOGRAM -- 1d, use np.histogram
     if chart_type == 'histogram':
-        #response_data['labels'] = [row[0] for row in rows]
-        #response_data['datasets'] = {}
-        #response_data['datasets']['label'] = ""
-        #response_data['datasets']['data'] = [row[1] for row in rows]
+        hvals, bin_vals = np.histogram([row[0] for row in rows], bins=25)
+        # TBD: FIX THE INT CAST
+        response_data['labels'] = [int(row) for row in bin_vals[:-1]]
+        response_data['datasets'] = []
+        response_data['datasets'].append({})
+        response_data['datasets'][0]['label'] = ""
+        response_data['datasets'][0]['data'] = [int(row) for row in hvals[:]]
         plot_title = 'DISTRIBUTION OF ' + fields[0].upper()
-        pass
  
     # LINE CHART -- 2d, return in order as float
     if chart_type == 'line_chart':
