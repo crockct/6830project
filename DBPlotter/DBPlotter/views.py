@@ -11,7 +11,7 @@ import sqlite3
 import json 
 
 # ===================================================
-#		HELPER FUNCTIONS
+#       HELPER FUNCTIONS
 # ===================================================
 
 # Check if a given string can be parsed into a number
@@ -33,7 +33,7 @@ def tables(c):
     table_list = []
 
     for row in c.execute("SELECT name FROM sqlite_master WHERE type='table';"):
-	table_list.append(row[0])
+        table_list.append(row[0])
 
     return table_list
 
@@ -42,7 +42,7 @@ def table_schema(c, table_name):
     rows = []
 
     for row in c.execute("pragma table_info(\'" + table_name + "\')"):
-	rows.append(row)
+        rows.append(row)
 
     return rows
 
@@ -65,7 +65,7 @@ def evaluate_query(c, query):
     rows = []
 
     for row in c.execute(query):
-	rows.append(row)
+        rows.append(row)
 
     return rows
 
@@ -110,8 +110,8 @@ def entropy(H):
     tot = float(np.sum(H))
 
     for i in range(H.shape[0]):
-	if H[i] > 0.0:
-	    si += (H[i] / tot) * np.log2((H[i] / tot))
+        if H[i] > 0.0:
+            si += (H[i] / tot) * np.log2((H[i] / tot))
 
     return -si
 
@@ -135,7 +135,7 @@ def generate_id():
 
 
 # ===================================================
-#		    VIEWS
+#           VIEWS
 # ===================================================
 
 # Initialize session and return list of tables in database file
@@ -159,13 +159,19 @@ def make_queries(request):
     table = request.GET.get('table_name', '')
 
     if table == '':
-	return HttpResponse('No table name specified!')
+        return HttpResponse('No table name specified!')
 
+    # Check to see if this table was already processed before
+    if not (request.session.get(table, '') == ''):
+        return HttpResponse(request.session.get(table, ''), content_type="application/json")
+
+    # Read in column names and types for this table
     c = initialize_connection(request.session.get('filename', ''))
     columns = table_columns(c, table)
     types = table_types(c, table)
     nr = row_count(c, table)
 
+    # Max number of rows to sample from a table (to cap CPU costs for this project)
     read_max = 100000
 
     # Generate categorical chart using self-information scheme 
@@ -177,52 +183,51 @@ def make_queries(request):
     j2_max = -1;
 
     for i, t in enumerate(types):
-	if ('char' in t):
-	    # Heuristic: only consider string entries with less than 100 chars
-	    print t
-	    if int(re.sub('\D', '', t)) <= 100:
-		# Sample at most read_max rows
-		if nr < read_max: 
-		    X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
-		else:
-		    X = seq_column(c, table, columns[i], read_max)
-		l = len(Counter(X))
-		si = self_information(X)
-		if l > 0:
-		    sin = si / l
-		    if sin > sin_max:
-			i_max = i
-			sin_max = sin
+        if ('char' in t):
+            # Heuristic: only consider string entries with less than 100 chars
+            print t
+            if int(re.sub('\D', '', t)) <= 100:
+                # Sample at most read_max rows
+                if nr < read_max: 
+                    X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
+                else:
+                    X = seq_column(c, table, columns[i], read_max)
+                l = len(Counter(X))
+                si = self_information(X)
+                if l > 0:
+                    sin = si / l
+                    if sin > sin_max:
+                        i_max = i
+                        sin_max = sin
 
-		    print columns[i], sin
+                        print columns[i], sin
 
-	for j in range(i + 1, len(types)):
-	    if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
-		if nr < read_max:
-		    X, Y = sample_columns(c, table, columns[i], columns[j], math.floor(0.3 * nr))
-		else:
-		    X, Y = sample_columns(c, table, columns[i], columns[j], read_max)
+    for j in range(i + 1, len(types)):
+        if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
+            if nr < read_max:
+                X, Y = sample_columns(c, table, columns[i], columns[j], math.floor(0.3 * nr))
+            else:
+                X, Y = sample_columns(c, table, columns[i], columns[j], read_max)
 
-		TBD = 100 # Replace this with sensible binning algo
-		H, xedges, yedges = np.histogram2d(X, Y, bins=TBD)
-		mi = mutual_information(H)
+            TBD = 100 # Replace this with sensible binning algo
+            H, xedges, yedges = np.histogram2d(X, Y, bins=TBD)
+            mi = mutual_information(H)
 
-		if mi > mi_max:
-		    mi_max = mi
-		    i2_max = i
-		    j2_max = j
+            if mi > mi_max:
+                mi_max = mi
+                i2_max = i
+                j2_max = j
 
-    # Introduce handling for case where q1 or q2 or q3 cannot be generated 
-    q1 = ''
-    q2 = ''
+    queries = {}
 
     if not (i_max == -1):
-	q1 = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
+        queries['pie_chart'] = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
     if not (i2_max == -1) and not (j2_max == -1):
-	q2 = 'SELECT ' + table + '.' + columns[i2_max] + ', ' + table + '.' + columns[j2_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i2_max] + ' NOT null AND ' + table + '.' + columns[j2_max] + ' NOT null '
+        queries['line_chart'] = 'SELECT ' + table + '.' + columns[i2_max] + ', ' + table + '.' + columns[j2_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i2_max] + ' NOT null AND ' + table + '.' + columns[j2_max] + ' NOT null '
 
-    #return HttpResponse("<p>" + q1 + "</p><p>" + q2 + "</p>")
-    return HttpResponse(q1)
+    request.session[table] = json.dumps(queries)
+
+    return HttpResponse(json.dumps(queries), content_type="application/json")
 
     # Generate distribution chart using self-information scheme
     # Generate functional chart using mutual-information scheme
@@ -235,43 +240,48 @@ def make_queries(request):
 def process_query(request):
     chart_type = request.GET.get('chart_type', '')
     query = request.GET.get('query', '')
+    print chart_type, query
 
     if chart_type == '':
-	return HttpResponse('No chart type specified!')
+        return HttpResponse('No chart type specified!')
 
     # Execute query and fetch rows
     c = initialize_connection(request.session.get('filename', ''))
     rows = evaluate_query(c, query)
 
+    response_data = {}
+
     # Organize into JSON according to chart type 
     # PIE CHART -- if 1d, use Counter, if 2d, string field is dict key
+    if chart_type == 'pie_chart':
+        if len(rows[0]) == 1:
+            X = [row[0] for row in rows]
+            response_data = Counter(X)
+        else:
+            for row in rows:
+                if isNumerical(row[0]):
+                    response_data[row[1]] = row[0]
+                else:
+                    response_data[row[0]] = row[1]
+
     # HISTOGRAM -- 1d, use np.histogram
+    if chart_type == 'histogram':
+        pass
     # LINE CHART -- 2d, return in order as float
+    if chart_type == 'line_chart':
+        pass
+
+    # Construct a JSON from dictionary and return
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def close(request):
+    request.session.clear()
+    return HttpResponse("session cleared")
 
 # ===================================================
-#		    OTHER
+#           OTHER
 # ===================================================
-
-# Handle query from a PIE CHART card (or any two-dimensional requester eventually)  
-def pie_chart(request):
-
-	# Open connection to database; currently just a file
-	conn = sqlite3.connect(request.GET.get('d',''));
-	c = conn.cursor()
-	
-	# Variable to hold query output as dictionary
-	response_data = {}
-
-	# Assuming TWO-COLUMN output from query, put string-type value as key of a dictionary
-	for row in c.execute(request.GET.get('q','')): 
-		if isNumerical(row[0]):
-			response_data[row[1]] = row[0]
-		else:
-			response_data[row[0]] = row[1]
-
-	# Construct a JSON from dictionary and return
-	return HttpResponse(json.dumps(response_data), content_type="application/json")
-	
+    
 # Handle query from a WORD CLOUD card (or any two-dimensional requester eventually)  
 def word_cloud(request):
-	return render_to_response('/DBPlotter/static/bubble_cloud/index.html')
+    return render_to_response('/DBPlotter/static/bubble_cloud/index.html')
