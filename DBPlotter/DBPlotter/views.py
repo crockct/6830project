@@ -262,15 +262,15 @@ def process_query(request):
         if len(rows[0]) == 1:
             X = [row[0] for row in rows]
             temp_data = Counter(X)
-            plot_title = 'PIE CHART OF ' + fields[0].upper()
+            plot_title = 'DISTRIBUTION OF ' + fields[0].upper()
         else:
             for row in rows:
                 if isNumerical(row[0]):
                     temp_data[row[1]] = row[0]
-                    plot_title = 'PIE CHART OF ' + fields[1].upper()
+                    plot_title = 'DISTRIBUTION OF ' + fields[1].upper()
                 else:
                     temp_data[row[0]] = row[1]
-                    plot_title = 'PIE CHART OF ' + fields[0].upper()
+                    plot_title = 'DISTRIBUTION OF ' + fields[0].upper()
         response_data = OrderedDict(sorted(temp_data.items(), key=lambda t: t[1]))
 
     # HISTOGRAM -- 1d, use np.histogram
@@ -279,7 +279,7 @@ def process_query(request):
         #response_data['datasets'] = {}
         #response_data['datasets']['label'] = ""
         #response_data['datasets']['data'] = [row[1] for row in rows]
-        plot_title = 'HISTOGRAM OF ' + fields[0].upper()
+        plot_title = 'DISTRIBUTION OF ' + fields[0].upper()
         pass
  
     # LINE CHART -- 2d, return in order as float
@@ -290,7 +290,7 @@ def process_query(request):
         response_data['datasets'].append({})
         response_data['datasets'][0]['label'] = ""
         response_data['datasets'][0]['data'] = [row[1] for row in rows]
-        plot_title = 'LINE CHART OF ' + fields[0].upper() + ' VS. ' + fields[1].upper()
+        plot_title = 'PLOT OF ' + fields[0].upper() + ' VS. ' + fields[1].upper()
 
     # Construct a JSON from dictionary and return
     return HttpResponse(json.dumps({"title": plot_title, "data": response_data}), content_type="application/json")
