@@ -161,11 +161,17 @@ def make_queries(request):
     if table == '':
 	return HttpResponse('No table name specified!')
 
+    # Check to see if this table was already processed before
+    if not (request.session.get(table, '') == ''):
+	return HttpResponse(request.session.get(table, ''), content_type="application/json")
+
+    # Read in column names and types for this table
     c = initialize_connection(request.session.get('filename', ''))
     columns = table_columns(c, table)
     types = table_types(c, table)
     nr = row_count(c, table)
 
+    # Max number of rows to sample from a table (to cap CPU costs for this project)
     read_max = 100000
 
     # Generate categorical chart using self-information scheme 
@@ -212,17 +218,16 @@ def make_queries(request):
 		    i2_max = i
 		    j2_max = j
 
-    # Introduce handling for case where q1 or q2 or q3 cannot be generated 
-    q1 = ''
-    q2 = ''
+    queries = {}
 
     if not (i_max == -1):
-	q1 = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
+	queries['pie_chart'] = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
     if not (i2_max == -1) and not (j2_max == -1):
-	q2 = 'SELECT ' + table + '.' + columns[i2_max] + ', ' + table + '.' + columns[j2_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i2_max] + ' NOT null AND ' + table + '.' + columns[j2_max] + ' NOT null '
+	queries['line_chart'] = 'SELECT ' + table + '.' + columns[i2_max] + ', ' + table + '.' + columns[j2_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i2_max] + ' NOT null AND ' + table + '.' + columns[j2_max] + ' NOT null '
 
-    #return HttpResponse("<p>" + q1 + "</p><p>" + q2 + "</p>")
-    return HttpResponse(q1)
+    request.session[table] = json.dumps(queries)
+
+    return HttpResponse(json.dumps(queries), content_type="application/json")
 
     # Generate distribution chart using self-information scheme
     # Generate functional chart using mutual-information scheme
@@ -235,6 +240,7 @@ def make_queries(request):
 def process_query(request):
     chart_type = request.GET.get('chart_type', '')
     query = request.GET.get('query', '')
+    print chart_type, query
 
     if chart_type == '':
 	return HttpResponse('No chart type specified!')
@@ -243,10 +249,34 @@ def process_query(request):
     c = initialize_connection(request.session.get('filename', ''))
     rows = evaluate_query(c, query)
 
+    response_data = {}
+
     # Organize into JSON according to chart type 
     # PIE CHART -- if 1d, use Counter, if 2d, string field is dict key
+    if chart_type == 'pie_chart':
+	if len(rows[0]) == 1:
+	    X = [row[0] for row in rows]
+	    response_data = Counter(X)
+	else:
+	    for row in rows:
+		if isNumerical(row[0]):
+		    response_data[row[1]] = row[0]
+		else:
+		    response_data[row[0]] = row[1]
+
     # HISTOGRAM -- 1d, use np.histogram
+    if chart_type == 'histogram':
+	pass
     # LINE CHART -- 2d, return in order as float
+    if chart_type == 'line_chart':
+	pass
+
+    # Construct a JSON from dictionary and return
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def close(request):
+    request.session.clear()
+    return HttpResponse("session cleared")
 
 # ===================================================
 #		    OTHER
