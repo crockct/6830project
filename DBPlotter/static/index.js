@@ -15,7 +15,7 @@ var filepathBtnEvent = function() {
             success: function(data) {
                 table_names = [];
                 // TODO: remove the line below this
-                table_names.push('<li><button class="table-name">tablename1</button></li>');
+                // table_names.push('<li><button class="table-name">tablename1</button></li>');
                 for (i in data) {
                     table_names.push('<li><button class="table-name" id="' + data[i] + '">' + data[i] + '</button></li>');
                 }
@@ -38,7 +38,7 @@ var tableNameBtnEvent = function() {
         // display cards
         $("#cards").show();
         var tablename = $(this).text();
-        console.log("getting card info for table: " + tablename);
+        console.log("getting cards for table: " + tablename);
         $.ajax({
             type: "GET",
             url: "/make_queries/",
@@ -46,7 +46,7 @@ var tableNameBtnEvent = function() {
                 "table_name": $(this).text()
             },
             success: function(data) {
-                console.log("bogus data");
+                console.log("data:");
                 console.log(data);
                 for (i in data) {
                     var card_type = i[0];
