@@ -75,7 +75,7 @@
 						</div>
 					</div>
 					<div id="cards" style="display: none;">
-						<div id="new-card" class="change-me" style="display: none;">
+						<div id="new-card" style="display: none;">
 							<div class="flipper flip">
 								<div class="card">
 									<div class="front">
@@ -83,15 +83,15 @@
 											<span id="results-title-span" class="results-title"></span>
 											<span class="edit-button"><i class="fa fa-terminal"></i></span>
 										</div>
-										<div class="change-me">
-											<canvas class="change-me" width="520" height="260"></canvas>
+										<div>
+											<canvas width="520" height="260"></canvas>
 										</div>
 									</div>
 									<div class="back">
 										<div class="card-instructions" id="back-instructions">
 											<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
 											SQL Query
-											<span id="execute-button" class="run-button" onclick="change-me()"><i class="fa fa-line-chart"></i><!-- <i class="fa fa-pencil"></i> --></span>
+											<span id="execute-button" class="run-button"><i class="fa fa-line-chart"></i><!-- <i class="fa fa-pencil"></i> --></span>
 											<textarea id="query" spellcheck="false">Enter a query...</textarea>
 										</div>
 									</div>

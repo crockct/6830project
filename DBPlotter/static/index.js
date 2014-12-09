@@ -75,25 +75,26 @@ var getCardData = function(card_type, card_query) {
 
 var addCard = function(card_type, card_query, data) {
     var newCard = $("#new-card").clone();
-    newCard.attr('id',"");
-    
-    $("#new-card").before()
+    newCard.attr('id', '').data('card-type', card_type);
+    newCard.find("#execute-button").data('card-type', card_type);
+    newCard.find(".flipper").removeClass("flip");
     switch (card_type) {
         case "pie_chart":
-            addPieChartCard();
+            newCard = addPieChart(data, newCard);
             break;
         case "histogram":
-            addHistogramCard();
+            newCard = addHistogram(data);
             break;
         case "line_chart":
-            addLineChartCard();
+            newCard = addLineChart(data);
             break;
         default:
             console.log("error: cannot render card type " + card_type);
     }
+    $("#new-card").before(newCard);
 }
 
-var addPieChartCard = function(data) {
+var addPieChart = function(data, newCard) {
     var pie_data = [];
 
     $.each(data, function(key, val) {
@@ -104,11 +105,11 @@ var addPieChartCard = function(data) {
         });
     });
 
-    document.querySelector(".flipper").classList.toggle("flip")
-    var canvas = document.getElementById("myChart");
+    var canvas = newCard.find("canvas")[0];
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     myPieChart = new Chart(ctx).Pie(pie_data, {});
+    return newCard;
 }
 
 // // request all info needed to display the pie chart card for the given table
