@@ -13,7 +13,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
 		<script src="index.js"></script>
 		<script src="chart.js"></script>
-		<script src="cards.js"></script>
+		<!-- <script src="cards.js"></script> -->
 		<!--<script src="http://d3js.org/d3.v3.min.js"></script>
 		script src="wordcloud.js"></script>-->
 	</head>
@@ -75,36 +75,13 @@
 						</div>
 					</div>
 					<div id="cards" style="display: none;">
-						<div id="new-card" style="display: none;">
-							<div class="flipper flip">
-								<div class="card">
-									<div class="front">
-										<div class="card-instructions" id="front-instructions">
-											<span id="results-title-span" class="results-title"></span>
-											<span class="edit-button"><i class="fa fa-terminal"></i></span>
-										</div>
-										<div>
-											<canvas width="520" height="260"></canvas>
-										</div>
-									</div>
-									<div class="back">
-										<div class="card-instructions" id="back-instructions">
-											<span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
-											SQL Query
-											<span id="execute-button" class="run-button"><i class="fa fa-line-chart"></i><!-- <i class="fa fa-pencil"></i> --></span>
-											<textarea id="query" spellcheck="false">Enter a query...</textarea>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- <div class="row">
-									<h3>Add card</h3>
-									<span class="edit-button" id="add_pie" onclick="addPieChart()"><i class="fa fa-pie-chart"></i></span><br></br>
-									<span class="edit-button" id="add_line" onclick="addLineChart()"><i class="fa fa-line-chart"></i></span><br></br>
-									<span class="edit-button" id="add_bar" onclick="addBarChart()"><i class="fa fa-bar-chart"></i></span>
-						</div> -->
 					</div>
+					<!-- <div class="row">
+						<h3>Add card</h3>
+						<span class="edit-button" id="add_pie" onclick="addPieChart()"><i class="fa fa-pie-chart"></i></span><br></br>
+						<span class="edit-button" id="add_line" onclick="addLineChart()"><i class="fa fa-line-chart"></i></span><br></br>
+						<span class="edit-button" id="add_bar" onclick="addBarChart()"><i class="fa fa-bar-chart"></i></span>
+					</div> -->
 				</div>
 			</div>
 			<div class="footer row">

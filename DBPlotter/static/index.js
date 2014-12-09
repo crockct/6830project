@@ -16,15 +16,15 @@ var filepathBtnEvent = function() {
                 table_names = [];
                 // TODO: remove the line below this
                 // table_names.push('<li><button class="table-name">tablename1</button></li>');
-                for (i in data) {
+                for (var i in data) {
                     table_names.push('<li><button class="table-name" id="' + data[i] + '">' + data[i] + '</button></li>');
                 }
                 $('#tables-list').html(table_names.join(''));
                 tableNameBtnEvent();
             }
-        })
+        });
     });
-}
+};
 
 // this function is called every time a table name is clicked on--
 // it hides the instructions and displays the cards for the selected table,
@@ -36,7 +36,7 @@ var tableNameBtnEvent = function() {
         // hide instructions
         $("#instructions").hide();
         // display cards
-        $("#cards").show();
+        $("#cards").html('').show();
         var tablename = $(this).text();
         console.log("getting cards for table: " + tablename);
         $.ajax({
@@ -52,12 +52,9 @@ var tableNameBtnEvent = function() {
             }
         });
     });
-}
+};
 
 var getCardData = function(card_type, card_query) {
-    console.log("requesting chart...");
-    console.log("card type: " + card_type);
-    console.log("card query: " + card_query);
     $.ajax({
         type: "GET",
         url: "/process_query/",
@@ -66,35 +63,41 @@ var getCardData = function(card_type, card_query) {
             "query": card_query
         },
         success: function(data) {
-            console.log("data to plot");
-            console.log(data);
             addCard(card_type, card_query, data);
         }
-    })
-}
+    });
+};
 
 var addCard = function(card_type, card_query, data) {
-    var newCard = $("#new-card").clone();
-    newCard.attr('id', '').data('card-type', card_type);
-    newCard.find("#execute-button").data('card-type', card_type);
-    newCard.find(".flipper").removeClass("flip");
-    switch (card_type) {
-        case "pie_chart":
-            newCard = addPieChart(data, newCard);
-            break;
-        case "histogram":
-            newCard = addHistogram(data);
-            break;
-        case "line_chart":
-            newCard = addLineChart(data);
-            break;
-        default:
-            console.log("error: cannot render card type " + card_type);
-    }
-    $("#new-card").before(newCard);
-}
+    // var newCard = $("#new-card").clone();
+    var newCard = $.get("card.html").done(function(newCard) {
+        newCard = $(newCard);
+        newCard.attr('id', '').data('card-type', card_type);
+        newCard.find("#execute-button").data('card-type', card_type);
+        newCard.find(".flipper").removeClass("flip");
+
+        switch (card_type) {
+            case "pie_chart":
+                console.log("rendering pie chart...");
+                addPieChart(data, newCard);
+                console.log("pie chart rendered");
+                return;
+            case "histogram":
+                console.log("rendering histogram...");
+                addHistogram(data);
+                return;
+            case "line_chart":
+                console.log("rendering line chart...");
+                addLineChart(data);
+                return;
+            default:
+                console.log("error: cannot render card type " + card_type);
+        }
+    });
+};
 
 var addPieChart = function(data, newCard) {
+    console.log("hello2");
     var pie_data = [];
 
     $.each(data, function(key, val) {
@@ -106,10 +109,24 @@ var addPieChart = function(data, newCard) {
     });
 
     var canvas = newCard.find("canvas")[0];
+    console.log("canvas");
+    console.log(canvas);
+
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     myPieChart = new Chart(ctx).Pie(pie_data, {});
-    return newCard;
+    console.log("myPieChart");
+    console.log(myPieChart);
+    $("#cards").append(newCard);
+};
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 // // request all info needed to display the pie chart card for the given table

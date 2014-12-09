@@ -1,16 +1,28 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="styles.css" media="screen">
-<link rel="stylesheet" href="font-awesome.css">
+<div id="new-card" data-card-type="">
+    <div class="flipper flip">
+        <div class="card">
+            <div class="front">
+                <div class="card-instructions" id="front-instructions">
+                    <span id="results-title-span" class="results-title"></span>
+                    <span class="edit-button"><i class="fa fa-terminal"></i></span>
+                </div>
+                <div>
+                    <canvas width="520" height="260"></canvas>
+                </div>
+            </div>
+            <div class="back">
+                <div class="card-instructions" id="back-instructions">
+                    <span class="remove-button" onclick="removeChart()"><i class="fa fa-remove"></i></span>
+                    SQL Query
+                    <span id="execute-button" data-card-type="" class="run-button"><i class="fa fa-line-chart"></i><!-- <i class="fa fa-pencil"></i> --></span>
+                    <textarea id="query" spellcheck="false">Enter a query...</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- javascript scripts -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
-<script src="index.js"></script>
-<script src="chart.js"></script>
-<script src="cards.js"></script>
-<div class="container">
+<!-- <div class="container">
     <div class="flipper flip">
         <div class="card">
             <div class="front">
@@ -32,3 +44,4 @@
         </div>
     </div>
 </div>
+ -->
