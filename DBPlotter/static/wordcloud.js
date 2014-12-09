@@ -54,7 +54,7 @@ function runQueryWordCloud() {
 
     $.ajax({
         dataType: "json",
-        url: "http://127.0.0.1:8000/pie_chart/?d=".concat($('#dbfile').val()).concat("&q=").concat($('#query').val().replace(/\n/g, " ").replace(";", "")),
+        url: "http://127.0.0.1:8000/pie_chart/?d=".concat($('#dbfile').val()).concat("&q=").concat($('.query-text').val().replace(/\n/g, " ").replace(";", "")),
         success: function(data) {
             var word_data = [];
 

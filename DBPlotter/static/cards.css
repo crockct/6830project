@@ -1,96 +1,96 @@
-.card, .footer {
+.card {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    width: 600px;
+    padding: 20px 30px;
+    margin: 30px;
     overflow: hidden;
 }
 
-.card {
-    padding: 40px 0 0;
+.query-div, .canvas-div {
+    text-align: center;
 }
 
-.card {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-    font-size: 18px;
-    margin: 25px 0 20px;
-    height: 360px;
-    box-sizing: border-box;
-    float: left;
-    padding: 20px 30px;
+.buttons {
+    float: right;
+    margin: 10px 0px;
+}
+
+.query textarea {
+    background: #000;
+    color: white;
+    font-size: 14px;
+    font-family: "Courier New";
+    font-weight: bold;
+    padding: 10px;
+    resize: none;
+    height: 260px;
     width: 100%;
 }
 
-.flipper.flip {
-    transform: rotateY(180deg);
+.canvas {
+    width: 520px;
+    height: 260px;
 }
 
+/*.flipper.flip {
+    transform: rotateY(180deg);
+}*/
+
 /* flip speed goes here */
-.flipper {
+/*.flipper {
     width:600px;
     margin: 0 auto;
     transition: 0.9s;
     transform-style: preserve-3d;
-}
+}*/
 
 /* hide back of pane during swap */
-.front, .back {
+/*.front, .back {
     backface-visibility: hidden;
     height: 80%;
     width: 90%;
-}
+}*/
 
 /* front pane, placed above back */
-.front {
+/*.front {
     z-index: 2;
-    /* for firefox 31 */
     transform: rotateY(0deg);
-}
+}*/
 
 /* back, initially hidden pane */
-.back {
+/*.back {
     transform: rotateY(180deg);
-}
+}*/
 
-.card-instructions {
+/*.card-instructions {
     line-height: 1.5;
     margin-bottom: 20px;
     opacity: 0.8;
-}
+}*/
 
-.back textarea {
-    background: #000;
-    border: none;
-    box-sizing: border-box;
-    color: #fff;
-    font-size: 14px;
-    font-family: "source-code-pro";
-    font-weight: 500;
-    height: 260px;
-    padding: 10px;
-    resize: none;
-    width: 100%;
-}
+/*.back canvas {
+}*/
 
-.back canvas {
-}
-
-.code {
+/*.code {
     font-size: 14px;
     font-family: "source-code-pro";
     font-weight: 500;
     color:#5264AE;
-}
+}*/
 
-.remove-button {
+/*.remove-button {
 	font-size: 25px;
 	color: gray;
 	padding-right: 190px;
-}
+}*/
 
-.run-button, .edit-button {
+/*.run-button, .edit-button {
     font-size: 25px;
     color: gray;
     float: right; 
     cursor: pointer;
-}
+}*/
 
-.results-title {
+/*.results-title {
     float: left;
-}
+}*/

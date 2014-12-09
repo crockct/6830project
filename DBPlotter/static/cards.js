@@ -1,5 +1,5 @@
 // adds a blank card to the UI for the given type
-var addCard = function(card_type) {
+var addCard = function(card_type, card_query) {
     var newCard;
     $.ajax({
         url: 'card.html',
@@ -8,18 +8,19 @@ var addCard = function(card_type) {
             newCard = $(data);
         }
     });
-    newCard.attr('id', '').data('card-type', card_type);
-    newCard.find(".execute-button").data('card-type', card_type);
+    newCard.attr('data-card-type', card_type);
+    newCard.find(".execute-button").attr('data-card-type', card_type);
+    newCard.find(".query-text").text(card_query);
     attachCardBtnListeners(newCard);
     $("#cards").prepend(newCard);
-    newCard.find("#query").focus().select();
+    newCard.find(".query-text").focus().select();
     return newCard;
 };
 
 // sends a card type and SQL query to the server
 // receives all data necessary to render the SQL query for the given card type
-var executeQuery = function(card_type, card_query) {
-    var local_data;
+var executeQuery = function(card, card_type, card_query) {
+    var chart_data;
     $.ajax({
         type: "GET",
         url: "/process_query/",
@@ -29,15 +30,16 @@ var executeQuery = function(card_type, card_query) {
             "query": card_query
         },
         success: function(data) {
-            local_data = data;
+            chart_data = data;
         }
     });
-    return local_data;
+    addChart(card, card_type, chart_data);
+    showChart(card);
 };
 
 // render the chart on the card given the data
-var addChart = function(card_type, card, data) {
-    card.find("canvas").html('');
+var addChart = function(card, card_type, data) {
+    card.find(".canvas-div").html('<canvas class="canvas" width="520" height="260"></canvas>');
     switch (card_type) {
         case "pie_chart":
             card = addPieChart(data, card);
@@ -81,7 +83,7 @@ var addPieChart = function(data, newCard) {
 };
 
 // renders a histogram on a card
-var addHistogramChart = function(data, newCard) {
+var addHistogram = function(data, newCard) {
     var canvas = newCard.find("canvas")[0];
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -111,8 +113,32 @@ var removeCardBtnEvent = function(card) {
     var removeCardBtn = card.find(".remove-button");
     removeCardBtn.on('click', function(e) {
         e.preventDefault();
-        $(this).closest('.card').remove();
+        card.remove();
     });
+};
+
+// flip the card over
+var flipCard = function(card) {
+    card.find(".query").toggleClass('hide');
+    card.find(".chart").toggleClass('hide');
+    if (!card.find(".query").hasClass('hide')) {
+        // put focus on the query textarea
+        card.find(".query-text").focus().select();
+    }
+};
+
+// if the chart is not already shown, flip the card
+var showChart = function(card) {
+    card.find(".query").addClass('hide');
+    card.find(".chart").removeClass('hide');
+};
+
+// if the query textarea is not already shown, flip the card
+var showQuery = function(card) {
+    card.find(".query").removeClass('hide');
+    card.find(".chart").addClass('hide');
+    // put focus on the query textarea
+    card.find(".query-text").focus().select();
 };
 
 // attach listener to the flip button on a card
@@ -120,10 +146,7 @@ var flipCardButtonEvent = function(card) {
     var flipCardButton = card.find(".flip-button");
     flipCardButton.on('click', function(e) {
         e.preventDefault();
-        var card = $(this).closest('.card');
-        card.find(".query").toggleClass('hide');
-        card.find(".chart").toggleClass('hide');
-        // $(this).closest('.flipper').toggleClass("flip");
+        flipCard(card);
     });
 };
 
@@ -132,14 +155,9 @@ var executeQueryBtnEvent = function(card) {
     var executeQueryBtn = card.find(".execute-button");
     executeQueryBtn.on('click', function(e) {
         e.preventDefault();
-        var card = $(this).closest('.card');
         var card_type = card.data("card-type");
-        var card_query = card.find("#query").val();
-        var card_data = executeQuery(card_type, card_query);
-        // render the chart on the card
-        addChart(card_type, card, card_data);
-        // flip the card over to display the chart
-        // card.find('.flipper').removeClass("flip");
+        var card_query = card.find(".query-text").val();
+        executeQuery(card, card_type, card_query);
     });
 };
 
@@ -148,13 +166,13 @@ var editQueryBtnEvent = function(card) {
     var editQueryBtn = card.find(".edit-button");
     editQueryBtn.on('click', function(e) {
         e.preventDefault();
-        var card = $(this).closest('.card');
-        // $(this).closest('.flipper').addClass("flip");
-        card.find("#query").focus().select();
+        // flip the card over to display the query
+        showQuery(card);
     });
 };
 
-$(document).ready(function() {
-	var card = $(".card");
-	attachCardBtnListeners(card);
-});
+// everything below this is used for testing card.html
+// $(document).ready(function() {
+// 	var card = $(".card");
+// 	attachCardBtnListeners(card);
+// });
