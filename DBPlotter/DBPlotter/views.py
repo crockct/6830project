@@ -6,6 +6,7 @@ import numpy as np
 import random
 import math
 import re
+import string
 
 import sqlite3
 import json 
@@ -67,13 +68,14 @@ def evaluate_query(c, query):
     for row in c.execute(query):
         rows.append(row)
 
-    return rows
+    return rows, [field_name[0] for field_name in c.description]
 
 # Evaluate query and return random sample of rows
 def sample_query(c, query, n):
     query += " ORDER BY RANDOM() LIMIT " + str(n)
 
-    return evaluate_query(c, query)
+    rows, fields = evaluate_query(c, query)
+    return rows
 
 def sample_column(c, table, column, n):
     query = 'SELECT ' + table + '.' + column + ' FROM ' + table + ' WHERE ' + table + '.' + column + ' NOT null'
@@ -83,7 +85,7 @@ def sample_column(c, table, column, n):
 
 def seq_column(c, table, column, n):
     query = 'SELECT ' + table + '.' + column + ' FROM ' + table + ' WHERE ' + table + '.' + column + ' NOT null LIMIT ' + str(n)
-    rows = evaluate_query(c, query)
+    rows, fields = evaluate_query(c, query)
 
     return [row[0] for row in rows]
 
@@ -94,7 +96,8 @@ def sample_columns(c, table, column1, column2, n):
     return [row[0] for row in rows], [row[1] for row in rows]
 
 def row_count(c, table):
-    return evaluate_query(c, 'SELECT COUNT(*) FROM ' + table)[0][0]
+    rows, fields = evaluate_query(c, 'SELECT COUNT(*) FROM ' + table)
+    return rows[0][0]
 
 # Calculate self-information for a set
 def self_information(X):
@@ -247,9 +250,10 @@ def process_query(request):
 
     # Execute query and fetch rows
     c = initialize_connection(request.session.get('filename', ''))
-    rows = evaluate_query(c, query)
+    rows, fields = evaluate_query(c, query)
 
     response_data = {}
+    plot_title = ''
 
     # Organize into JSON according to chart type 
     # PIE CHART -- if 1d, use Counter, if 2d, string field is dict key
@@ -258,12 +262,15 @@ def process_query(request):
         if len(rows[0]) == 1:
             X = [row[0] for row in rows]
             temp_data = Counter(X)
+            plot_title = 'PIE CHART OF ' + fields[0].upper()
         else:
             for row in rows:
                 if isNumerical(row[0]):
                     temp_data[row[1]] = row[0]
+                    plot_title = 'PIE CHART OF ' + fields[1].upper()
                 else:
                     temp_data[row[0]] = row[1]
+                    plot_title = 'PIE CHART OF ' + fields[0].upper()
         response_data = OrderedDict(sorted(temp_data.items(), key=lambda t: t[1]))
 
     # HISTOGRAM -- 1d, use np.histogram
@@ -272,6 +279,7 @@ def process_query(request):
         #response_data['datasets'] = {}
         #response_data['datasets']['label'] = ""
         #response_data['datasets']['data'] = [row[1] for row in rows]
+        plot_title = 'HISTOGRAM OF ' + fields[0].upper()
         pass
  
     # LINE CHART -- 2d, return in order as float
@@ -280,11 +288,12 @@ def process_query(request):
         response_data['labels'] = [row[0] for row in rows]
         response_data['datasets'] = []
         response_data['datasets'].append({})
-        response_data['datasets'][0]['label'] = "test"
+        response_data['datasets'][0]['label'] = ""
         response_data['datasets'][0]['data'] = [row[1] for row in rows]
+        plot_title = 'LINE CHART OF ' + fields[0].upper() + ' VS. ' + fields[1].upper()
 
     # Construct a JSON from dictionary and return
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    return HttpResponse(json.dumps({"title": plot_title, "data": response_data}), content_type="application/json")
 
 def close(request):
     request.session.clear()
