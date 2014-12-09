@@ -4,7 +4,6 @@ var tableCards = {};
 var addCard = function(card_type, card_query, status) {
     var table_name = $(".selected-table-name").text();
     var card_id = table_name + "-card-" + getRandomColor();
-    console.log(tableCards[table_name]);
     var newCard;
     $.ajax({
         url: 'card.html',
@@ -14,6 +13,7 @@ var addCard = function(card_type, card_query, status) {
         }
     });
     newCard.attr('id', card_id);
+    newCard.addClass('col-xs-6');
     newCard.attr('data-card-type', card_type);
     newCard.find(".execute-button").attr('data-card-type', card_type);
     newCard.find(".query-text").text(card_query);
