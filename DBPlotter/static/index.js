@@ -1,6 +1,13 @@
 $(document).ready(function() {
-    filepathBtnEvent();
-    $("#filepath").focus().select();
+    $.ajax({
+        url: "/close/",
+        async: false,
+        success: function(data) {
+            console.log(data);
+            filepathBtnEvent();
+            $("#filepath").focus().select();
+        }
+    });
 });
 
 // sends the DB filepath to the server and requests the list of table names for the given DB
