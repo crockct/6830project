@@ -37,7 +37,7 @@ var executeQuery = function(card_type, card_query) {
 
 // render the chart on the card given the data
 var addChart = function(card_type, card, data) {
-	card.find("canvas").html('');
+    card.find("canvas").html('');
     switch (card_type) {
         case "pie_chart":
             card = addPieChart(data, card);
@@ -111,7 +111,7 @@ var removeCardBtnEvent = function(card) {
     var removeCardBtn = card.find(".remove-button");
     removeCardBtn.on('click', function(e) {
         e.preventDefault();
-        $(this).closest('.chart-card').remove();
+        $(this).closest('.card').remove();
     });
 };
 
@@ -120,7 +120,10 @@ var flipCardButtonEvent = function(card) {
     var flipCardButton = card.find(".flip-button");
     flipCardButton.on('click', function(e) {
         e.preventDefault();
-        $(this).closest('.flipper').toggleClass("flip");
+        var card = $(this).closest('.card');
+        card.find(".query").toggleClass('hide');
+        card.find(".chart").toggleClass('hide');
+        // $(this).closest('.flipper').toggleClass("flip");
     });
 };
 
@@ -129,14 +132,14 @@ var executeQueryBtnEvent = function(card) {
     var executeQueryBtn = card.find(".execute-button");
     executeQueryBtn.on('click', function(e) {
         e.preventDefault();
-        var card = $(this).closest('.chart-card');
+        var card = $(this).closest('.card');
         var card_type = card.data("card-type");
         var card_query = card.find("#query").val();
         var card_data = executeQuery(card_type, card_query);
         // render the chart on the card
         addChart(card_type, card, card_data);
         // flip the card over to display the chart
-        card.find('.flipper').removeClass("flip");
+        // card.find('.flipper').removeClass("flip");
     });
 };
 
@@ -145,8 +148,13 @@ var editQueryBtnEvent = function(card) {
     var editQueryBtn = card.find(".edit-button");
     editQueryBtn.on('click', function(e) {
         e.preventDefault();
-        var card = $(this).closest('.chart-card');
-        $(this).closest('.flipper').addClass("flip");
+        var card = $(this).closest('.card');
+        // $(this).closest('.flipper').addClass("flip");
         card.find("#query").focus().select();
     });
 };
+
+$(document).ready(function() {
+	var card = $(".card");
+	attachCardBtnListeners(card);
+});
