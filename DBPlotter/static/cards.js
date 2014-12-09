@@ -1,3 +1,5 @@
+var tableCards = {};
+
 // adds a blank card to the UI for the given type
 var addCard = function(card_type, card_query) {
     var newCard;
