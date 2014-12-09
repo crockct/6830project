@@ -3,7 +3,6 @@ $(document).ready(function() {
         url: "/close/",
         async: false,
         success: function(data) {
-            console.log(data);
             filepathBtnEvent();
             $("#filepath").focus().select();
         }
@@ -26,7 +25,7 @@ var filepathBtnEvent = function() {
                     var table_name = data[i];
                     table_names.push('<li><button class="table-name" id="' + table_name + '">' + table_name + '</button></li>');
                     // add the table name to the hash map of table names to cards
-                    tableCards[table_name] = {};
+                    tableCards[table_name] = [];
                 }
                 $('#tables-list').html(table_names.join(''));
                 tableNameBtnEvent();
@@ -61,19 +60,18 @@ var tableNameBtnEvent = function() {
                 success: function(data) {
                     $(".selected-table-name").text(table_name);
                     $.each(data, function(card_type, card_query) { // add a new blank card to the UI
-                        var card_id = table_name + '-card-' + Object.keys(savedTableCards).length;
-                        var newCard = addCard(card_id, card_type, card_query);
+                        var newCard = addCard(card_type, card_query, 'new');
                         executeQuery(newCard, card_type, card_query);
-                        tableCards[table_name][card_id] = {
-                            "card_type": card_type,
-                            "card_query": card_query,
-                            // "data": data
-                        };
                     });
                 }
             });
         } else {
-            console.log("I've already been tot his table!");
+            var savedtableCards = tableCards[table_name];
+            for (var i in savedtableCards) {
+                var info = savedtableCards[i];
+                var newCard = addCard(info.card_type, info.card_query, 'old');
+                executeQuery(newCard, info.card_type, info.card_query);
+            }
         }
     });
 };
