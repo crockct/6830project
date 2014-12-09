@@ -3,20 +3,31 @@
 	<head>
 		<title>Database Plotter</title>
 		<!-- CSS files -->
+		<!-- css for bubble chart -->
+		<!--<link rel="stylesheet" type="text/css" href="bubble_files/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="bubble_files/bubble_styles.css"/> -->
+		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="styles.css">
 		<link rel="stylesheet" href="cards.css">
 		<link rel="stylesheet" href="font-awesome.css">
+		
+		
+		
 		<!-- javascript scripts -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js"></script>
 		<script src="cards.js"></script>
 		<script src="index.js"></script>
 		<script src="Chart.js"></script>
-		<!--<script src="http://d3js.org/d3.v3.min.js"></script>
-		script src="wordcloud.js"></script>-->
+		
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<!--<script type="text/javascript" src="bubble_files/modernizr-2.0.6.min.js"></script>-->
+		<script defer src="bubble_files/plugins.js"></script>
+		<script src="bubble_files/bubble_cloud.js"></script> 
+		<script src="bubble_files/d3.min.js"></script>
+		
 	</head>
 	
 	<body>
@@ -94,6 +105,12 @@
 				</div>
 			</div>
 		</div>
-		
+	<!--<script> 
+		window._gaq = [['_setAccount','UA-17355070-1'],['_trackPageview'],['_trackPageLoadTime']];
+		Modernizr.load({
+		  load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
+		});
+	</script>-->
 	</body>
+	
 </html>
