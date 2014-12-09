@@ -16,7 +16,6 @@ var filepathBtnEvent = function() {
         $.ajax({
             type: "GET",
             url: "/get_tables/",
-            async: false,
             data: {
                 "f": $('#filepath').val()
             },
@@ -56,7 +55,6 @@ var tableNameBtnEvent = function() {
             $.ajax({
                 type: "GET",
                 url: "/make_queries/",
-                async: false,
                 data: {
                     "table_name": table_name
                 },
