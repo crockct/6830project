@@ -38,7 +38,6 @@ var tableNameBtnEvent = function() {
         // display cards
         $("#cards").html('').show();
         var tablename = $(this).text();
-        console.log("getting cards for table: " + tablename);
         $.ajax({
             type: "GET",
             url: "/make_queries/",
@@ -54,6 +53,8 @@ var tableNameBtnEvent = function() {
     });
 };
 
+// sends a card type and SQL query to the server
+// receives all data necessary to render the SQL query for the given card type
 var getCardData = function(card_type, card_query) {
     $.ajax({
         type: "GET",
@@ -68,6 +69,7 @@ var getCardData = function(card_type, card_query) {
     });
 };
 
+// adds a card to the UI and renders the given card_type chart on the card
 var addCard = function(card_type, card_query, data) {
     // var newCard = $("#new-card").clone();
     var newCard = $.get("card.html").done(function(newCard) {
@@ -78,16 +80,12 @@ var addCard = function(card_type, card_query, data) {
 
         switch (card_type) {
             case "pie_chart":
-                console.log("rendering pie chart...");
                 addPieChart(data, newCard);
-                console.log("pie chart rendered");
                 return;
             case "histogram":
-                console.log("rendering histogram...");
                 addHistogram(data);
                 return;
             case "line_chart":
-                console.log("rendering line chart...");
                 addLineChart(data);
                 return;
             default:
@@ -96,10 +94,9 @@ var addCard = function(card_type, card_query, data) {
     });
 };
 
+// renders a pie chart on a card
 var addPieChart = function(data, newCard) {
-    console.log("hello2");
     var pie_data = [];
-
     $.each(data, function(key, val) {
         pie_data.push({
             value: val,
@@ -107,19 +104,14 @@ var addPieChart = function(data, newCard) {
             color: getRandomColor()
         });
     });
-
     var canvas = newCard.find("canvas")[0];
-    console.log("canvas");
-    console.log(canvas);
-
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     myPieChart = new Chart(ctx).Pie(pie_data, {});
-    console.log("myPieChart");
-    console.log(myPieChart);
     $("#cards").append(newCard);
 };
 
+// returns random colors
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
