@@ -1,7 +1,7 @@
 body {
-    font-family: "proxima-nova";
+    font-family: noticia-text, serif;
     font-weight: 300;
-    font-size: 20px;
+    font-size: 19;
 }
 
 #main {
@@ -15,11 +15,61 @@ body {
   border:none; 
   padding:0!important;
   cursor: pointer;
-  color: #0000EE;
+  color: #000000;
+  font-family: play, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+h1 {
+    margin-top: 0px;
+    font-family: paytone-one, sans-serif;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+h3 {
+    font-family: open-sans, sans-serif;
+}
+
+.row {
+    padding-bottom: 25px;
+}
+
+.db-file-form .container-fluid {
+    background: #1C1C1C;
+}
+
+#filepath, #filepath-btn {
+    background: white;
+    border: 0px solid;
+    border-radius: 0px;
+}
+
+.navbar-brand {
+    font-family: paytone-one, sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    color: #FFFFFF;
+}
+
+.chart-title {
+    font-family: paytone-one, sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+li {
+    list-style-type:none;
+    padding-left: 0;
 }
 
 .table-name:hover {
-  text-decoration: underline;
+    font-weight: bold;
+}
+
+#tables-list {
+    padding-left: 0;
 }
 
 .footer {
@@ -40,9 +90,18 @@ body {
 .authors {
     margin-top: 0px;
     padding-bottom: 20px;
+    font-family: open-sans, sans-serif;
     font-weight: normal;
     font-size: 14px;
     color:#5264AE;
+}
+
+.code {
+    font-family: source-code-pro, sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .inline {

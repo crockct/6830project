@@ -21,6 +21,12 @@
 		<script src="cards.js"></script>
 		<script src="index.js"></script>
 		<script src="Chart.js"></script>
+		<script src="//use.edgefonts.net/play.js"></script>
+		<script src="//use.edgefonts.net/lato.js"></script>
+		<script src="//use.edgefonts.net/open-sans.js"></script>
+		<script src="//use.edgefonts.net/source-code-pro.js"></script> 
+		<script src="//use.edgefonts.net/noticia-text.js"></script>
+		<script src="//use.edgefonts.net/paytone-one.js"></script>
 		
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 		<!--<script type="text/javascript" src="bubble_files/modernizr-2.0.6.min.js"></script>-->
@@ -35,9 +41,9 @@
 			<nav class="navbar navbar-default" role="navigation">
 				<div class="container-fluid">
 					<div class="navbar-header">
-						<a class="navbar-brand" href="#">DB File Path</a>
+						<a class="navbar-brand" href="#">D2</a>
 					</div>
-					<form class="navbar-form navbar-left">
+					<form class="navbar-form navbar-right">
 						<div class="form-group">
 							<input id="filepath" type="text" class="form-control" placeholder="enter db filepath" value="static/mimic2.db">
 						</div>
@@ -50,18 +56,16 @@
 		<div id="main" class="container-fluid">
 			<div class="row">
 				<div id="table-name-col" class="col-xs-2">
-					<h3>Tables:</h3>
 					<ol id="tables-list">
 					</ol>
 				</div>
 				<div class="col-xs-10">
 					<div id="instructions" class="">
-						<h1>Database Dashboard</h1>
+						<h1>DATABASE DASHBOARD</h1>
 						<p class="authors">Mukarram Tahir, Katherine Hobbs, Colleen Rock</p>
 						<p>Enter the filepath for the database file in the form above and then select a table to view the graphs for the selected table.</p>
 						<div class="example-queries">
 							<div class="">
-								<h3>Example Query (for pie chart)</h3>
 								<p class="code">
 								SELECT d_labitems.test_name,
 								<br>d_labitems.itemid as e_itemid,
@@ -74,20 +78,12 @@
 								<br>ORDER BY NumberOfOccurences DESC
 								<br>LIMIT 5
 								</p>
-								<p> A more bogus query that can be used to generate a pie chart is given below; the numerical field is just the item ID of the meditem, but ends up being used as the tally for the pie chart.</p>
-								<p class="code">
-								SELECT DISTINCT d_meditems.*
-								<br>FROM d_meditems, medevents
-								<br>JOIN d_patients ON medevents.subject_id=d_patients.subject_id WHERE d_meditems.itemid=medevents.itemid AND sex='F'
-								<br>LIMIT 5
-								</p>
 							</div>
 						</div>
 					</div>
 					<div id="card-div" style="display: none;">
-						<div class="row"><h3>Displaying dashboard for <span class="selected-table-name"></span></h3></div>
+						<div class="row"><p>Displaying dashboard for <span class="selected-table-name"></span></p></div>
 						<div class="row">
-							<div class="inline"><h3>Add a card</h3></div>
 							<button id="add_pie" onclick="addCard('pie_chart','','new')" class="btn btn-default btn-lg"><span><i class="fa fa-pie-chart"></i></span></button>
 							<button id="add_line" onclick="addCard('line_chart','','new')" class="btn btn-default btn-lg"><span><i class="fa fa-line-chart"></i></span></button>
 							<button id="add_bar" onclick="addCard('histogram','','new')" class="btn btn-default btn-lg"><span><i class="fa fa-bar-chart"></i></span></button>
@@ -100,7 +96,6 @@
 			</div>
 			<div class="footer row">
 				<div class="container">
-					<span class="created-by">Prototype created for <a href="http://db.csail.mit.edu/6.830">MIT 6.830 Database Systems</a></span>
 					<!--Bubble Chart Adapted from: http://bl.ocks.org/mbostock/4063269-->
 				</div>
 			</div>
