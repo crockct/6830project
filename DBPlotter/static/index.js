@@ -60,6 +60,9 @@ var tableNameBtnEvent = function() {
                 },
                 success: function(data) {
                     $.each(data, function(card_type, card_query) { // add a new blank card to the UI
+                        if (card_type == "bubble_chart") {
+                            return;
+                        }
                         var newCard = addCard(card_type, card_query, 'new');
                         executeQuery(newCard, card_type, card_query);
                     });
