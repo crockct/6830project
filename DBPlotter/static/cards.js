@@ -13,7 +13,7 @@ var addCard = function(card_type, card_query, status) {
         }
     });
     newCard.attr('id', card_id);
-    newCard.addClass('col-xs-6');
+    newCard.addClass('col-xs-7');
     newCard.attr('data-card-type', card_type);
     newCard.find(".execute-button").attr('data-card-type', card_type);
     newCard.find(".query-text").text(card_query);
