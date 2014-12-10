@@ -189,10 +189,9 @@ def make_queries(request):
     i3_max = -1;
 
     for i, t in enumerate(types):
-        if ('char' in t):
+        if ('char' in t.lower()) or ('text' in t.lower()):
             # Heuristic: only consider string entries with less than 100 chars
-            print t
-            if int(re.sub('\D', '', t)) <= 100:
+	    if 1 == 1:
                 # Sample at most read_max rows
                 if nr < read_max: 
                     X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
@@ -200,42 +199,108 @@ def make_queries(request):
                     X = seq_column(c, table, columns[i], read_max)
                 l = len(Counter(X))
                 si = self_information(X)
-                if l > 0:
+		heuristics_pass = True;
+		if l > 0:
+		    for idx in range(0, int(math.ceil(0.1 * len(X)))):
+			if len(X[idx]) > 50:
+			    heuristics_pass = False;
+		if l > 0 and heuristics_pass:
                     sin = si / l
                     if sin > sin_max:
                         i_max = i
                         sin_max = sin
 
-                        print columns[i], sin
-        if ('double' in t):
+        if ('double' in t.lower()) or ('int' in t.lower()) or ('numeric' in t.lower()):
             if nr < read_max:
                 X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
             else:
                 X = seq_column(c, table, columns[i], read_max)
-            TBD = 100
-            h1, edges = np.histogram(X, bins=TBD)
+	    heuristics_pass = True
+	    if ('int' in t.lower()):
+		# Eliminate pkeys
+		if sum(Counter(X).values()) == read_max or sum(Counter(X).values()) == math.floor(0.5 * nr):
+		    heuristics_pass = False
+	    nbins = np.max([1.0, 2 * math.pow(len(X), 1.0 / 3.0)])
+            h1, edges = np.histogram(X, bins=nbins)
             si3 = entropy(h1)
-            if si3 > si_max:
+            if si3 > si_max and heuristics_pass:
                 si_max = si3
                 i3_max = i
-		print columns[i], si3
-            
+           
 
         for j in range(i + 1, len(types)):
-            if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
+            if (('double' in types[i].lower()) or ('double' in types[i].lower()) or ('numeric' in types[i].lower())) and (('double' in types[j].lower()) or ('double' in types[j].lower()) or ('numeric' in types[j].lower())):
                 if nr < read_max:
                     X, Y = sample_columns(c, table, columns[i], columns[j], math.floor(0.3 * nr))
                 else:
                     X, Y = sample_columns(c, table, columns[i], columns[j], read_max)
 
-                TBD = 100 # Replace this with sensible binning algo
-                H, xedges, yedges = np.histogram2d(X, Y, bins=TBD)
+                nbins = 100 # Replace this with sensible binning algo
+                H, xedges, yedges = np.histogram2d(X, Y, bins=nbins)
                 mi = mutual_information(H)
 
-                if mi > mi_max:
+		heuristics_pass = True
+		if ('int' in t.lower()):
+		    # Eliminate pkeys
+		    if sum(Counter(X).values()) == read_max or sum(Counter(X).values()) == math.floor(0.5 * nr):
+			heuristics_pass = False
+		    if sum(Counter(Y).values()) == read_max or sum(Counter(Y).values()) == math.floor(0.5 * nr):
+			heuristics_pass = False
+
+                if mi > mi_max and heuristics_pass:
                     mi_max = mi
                     i2_max = i
                     j2_max = j
+
+
+    #for i, t in enumerate(types):
+    #    if ('char' in t):
+    #        # Heuristic: only consider string entries with less than 100 chars
+    #        print t
+    #        if int(re.sub('\D', '', t)) <= 100:
+    #            # Sample at most read_max rows
+    #            if nr < read_max: 
+    #                X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
+    #            else:
+    #                X = seq_column(c, table, columns[i], read_max)
+    #            l = len(Counter(X))
+    #            si = self_information(X)
+    #            if l > 0:
+    #                sin = si / l
+    #                if sin > sin_max:
+    #                    i_max = i
+    #                    sin_max = sin
+
+    #                    print columns[i], sin
+    #    if ('double' in t):
+    #        if nr < read_max:
+    #            X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
+    #        else:
+    #            X = seq_column(c, table, columns[i], read_max)
+    #        TBD = 100
+    #        h1, edges = np.histogram(X, bins=TBD)
+    #        si3 = entropy(h1)
+    #        if si3 > si_max:
+    #            si_max = si3
+    #            i3_max = i
+    #    	print columns[i], si3
+    #        
+
+    #    for j in range(i + 1, len(types)):
+    #        if (('double' in types[i]) or ('double' in types[i])) and (('double' in types[j]) or ('double' in types[j])):
+    #            if nr < read_max:
+    #                X, Y = sample_columns(c, table, columns[i], columns[j], math.floor(0.3 * nr))
+    #            else:
+    #                X, Y = sample_columns(c, table, columns[i], columns[j], read_max)
+
+    #            TBD = 100 # Replace this with sensible binning algo
+    #            H, xedges, yedges = np.histogram2d(X, Y, bins=TBD)
+    #            mi = mutual_information(H)
+
+    #            if mi > mi_max:
+    #                mi_max = mi
+    #                i2_max = i
+    #                j2_max = j
 
     queries = {}
 
