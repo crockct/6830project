@@ -186,7 +186,7 @@ def make_queries(request):
     j2_max = -1;
 
     si_max = 0;
-    i3_max = 0;
+    i3_max = -1;
 
     for i, t in enumerate(types):
         if ('char' in t):
@@ -207,7 +207,7 @@ def make_queries(request):
                         sin_max = sin
 
                         print columns[i], sin
-        if ('int' in t) or ('double' in t):
+        if ('double' in t):
             if nr < read_max:
                 X = sample_column(c, table, columns[i], math.floor(0.5 * nr))
             else:
@@ -218,6 +218,7 @@ def make_queries(request):
             if si3 > si_max:
                 si_max = si3
                 i3_max = i
+		print columns[i], si3
             
 
         for j in range(i + 1, len(types)):
@@ -240,6 +241,7 @@ def make_queries(request):
 
     if not (i_max == -1):
         queries['pie_chart'] = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
+        queries['bubble_chart'] = 'SELECT ' + table + '.' + columns[i_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i_max] + ' NOT null '
     if not (i2_max == -1) and not (j2_max == -1):
         queries['line_chart'] = 'SELECT ' + table + '.' + columns[i2_max] + ', ' + table + '.' + columns[j2_max] + ' FROM ' + table + ' WHERE ' + table + '.' + columns[i2_max] + ' NOT null AND ' + table + '.' + columns[j2_max] + ' NOT null '
     if not (i3_max == -1):
@@ -274,7 +276,7 @@ def process_query(request):
 
     # Organize into JSON according to chart type 
     # PIE CHART -- if 1d, use Counter, if 2d, string field is dict key
-    if chart_type == 'pie_chart':
+    if chart_type == 'pie_chart' or chart_type == 'bubble_chart':
         temp_data = {}
         if len(rows[0]) == 1:
             X = [row[0] for row in rows]
@@ -292,7 +294,7 @@ def process_query(request):
 
     # HISTOGRAM -- 1d, use np.histogram
     if chart_type == 'histogram':
-        hvals, bin_vals = np.histogram([row[0] for row in rows], bins=25)
+        hvals, bin_vals = np.histogram([row[0] for row in rows], bins=15)
         # TBD: FIX THE INT CAST
         response_data['labels'] = [int(row) for row in bin_vals[:-1]]
         response_data['datasets'] = []

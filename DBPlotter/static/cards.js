@@ -65,6 +65,9 @@ var addChart = function(card, card_type, data, title) {
         case "line_chart":
             card = addLineChart(data, card);
             break;
+		case "bubble_chart":
+			card = addBubbleChart(data, card);
+			break;
         default:
             console.log("error: cannot render card type '" + card_type + "'");
     }
@@ -114,6 +117,13 @@ var addLineChart = function(data, newCard) {
     var myLineChart = new Chart(ctx).Line(data, {});
     return newCard;
 };
+
+// renders a bubblechart on a card
+var addBubbleChart = function(data, newCard){
+	console.log("add Bubble Chart");
+	newCard.find(".canvas-div").replaceWith("<div id='vis'></div>");
+	makeBubbleChartFunction(data);
+}
 
 // attach listeners for the remove, flip, edit query, and execute query buttons on a card
 var attachCardBtnListeners = function(card) {

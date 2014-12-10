@@ -1,10 +1,10 @@
-var data = [
+/*var data = [
 	{"text": "chicken", "count": 10}, 
 	{"text": "dog", "count": 30},
 	{"text": "rabbit", "count": 100},
 	{"text": "human", "count": 1}];
 console.log(data);
-
+*/
 
 var Bubbles = function() {
   var chart, clear, click, collide, collisionPadding, connectEvents, force, gravity, hashchange, height, idValue, jitter, label, margin, maxRadius, minCollisionRadius, mouseout, mouseover, node, rScale, rValue, textValue, tick, transformData, update, updateActive, updateLabels, updateNodes, width;
@@ -276,17 +276,20 @@ plotData = function(selector, data, plot) {
   return d3.select(selector).datum(data).call(plot);
 };
 
-$(function() {
-  var display, key, plot, text;
-  plot = Bubbles();
-  display = function(data) {
-	console.log("display");
-	console.log(data);
-    return plotData("#vis", data, plot); // I prepended when it said plotData not defined
+var makeBubbleChartFunction = function(data) {
+  console.log("make bubble chart function");
+  console.log(data);
+  var plot = Bubbles();
+  console.log(plot);
+  var display = function(data) {
+    var x = plotData("#vis", data, plot);
+	console.log(x);
+	return x;
   };
+  console.log(display);
 
   d3.select("#jitter").on("input", function() {
     return plot.jitter(parseFloat(this.output.value));
   });
  
-});
+};
